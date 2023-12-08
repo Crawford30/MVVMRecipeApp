@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.mvvmrecipeapp.ui.theme.MVVMRecipeAppTheme
+import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,7 +49,8 @@ class MainActivity : ComponentActivity() {
                         .width(200.dp)
                         .background(Color.Gray)
                         .height(200.dp)
-                        .border(BorderStroke(1.dp, Color.Red))
+                        .border(BorderStroke(1.dp, Color.Red)),
+                    horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
                         "Happy Coding",
