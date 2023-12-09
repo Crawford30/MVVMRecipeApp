@@ -2,6 +2,12 @@ package com.example.mvvmrecipeapp.network.model
 
 import com.google.gson.annotations.SerializedName
 
+
+/**
+ * Business model.
+ * The network model ie the server data
+ * Hence we need a mapper class to map the [domainmodel] to [networkmodel]
+ */
 class RecipeNetworkEntity(
     @SerializedName("pk")
     var pk: Int? = null,
