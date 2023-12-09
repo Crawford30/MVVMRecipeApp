@@ -7,6 +7,7 @@ import kotlinx.android.parcel.Parcelize
 
 /**
  * Business model.
+ * The data structure used to model the data
  */
 
 @Parcelize
