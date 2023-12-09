@@ -3,6 +3,7 @@ package com.example.mvvmrecipeapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -23,9 +24,17 @@ import androidx.compose.ui.unit.sp
 import com.example.mvvmrecipeapp.ui.theme.MVVMRecipeAppTheme
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
-class MainActivity : ComponentActivity() {
+//class MainActivity : ComponentActivity() {
+
+class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setContentView(R.layout.activity_main)
+
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.main_container, RecipeListFragment())
+            .commit()
 
 //        setContent {
 //            Column {
@@ -63,69 +72,69 @@ class MainActivity : ComponentActivity() {
 //
 //        }
 
-        setContent {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .background(Color.Gray)
-                    .verticalScroll(
-                        rememberScrollState(),
-                    )
-            ) {
-
-                Image(
-                    painter = painterResource(id = R.drawable.happy_meal_small),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .height(300.dp)
-                        .fillMaxWidth(),
-                    contentScale = ContentScale.Crop,
-                )
-
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Row(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        Text(
-                            text = "Happy Meal",
-                            style = TextStyle(
-                                fontSize = 26.sp
-                            ),
-                            modifier = Modifier.align(
-                                Alignment.CenterVertically
-                            )
-                        )
-
-                        Text(
-                            text = "$5.9",
-                            color = Color(0xFF85bb65),
-                            style = TextStyle(
-                                fontSize = 15.sp
-                            )
-                        )
-
-
-                    }
-
-                    Spacer(modifier = Modifier.padding(top = 10.dp))
-
-                    Text(
-                        text = "800 Calories",
-                        style = TextStyle(
-                            fontSize = 17.sp
-                        )
-                    )
-                    Spacer(modifier = Modifier.padding(top = 10.dp))
-
-                    Button(onClick = { }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
-                        Text(text = "ORDER NOW")
-                    }
-                }
-            }
-
-
-        }
+//        setContent {
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxSize()
+//                    .background(Color.Gray)
+//                    .verticalScroll(
+//                        rememberScrollState(),
+//                    )
+//            ) {
+//
+//                Image(
+//                    painter = painterResource(id = R.drawable.happy_meal_small),
+//                    contentDescription = "",
+//                    modifier = Modifier
+//                        .height(300.dp)
+//                        .fillMaxWidth(),
+//                    contentScale = ContentScale.Crop,
+//                )
+//
+//                Column(modifier = Modifier.padding(16.dp)) {
+//                    Row(
+//                        modifier = Modifier.fillMaxWidth(),
+//                        horizontalArrangement = Arrangement.SpaceBetween,
+//                    ) {
+//                        Text(
+//                            text = "Happy Meal",
+//                            style = TextStyle(
+//                                fontSize = 26.sp
+//                            ),
+//                            modifier = Modifier.align(
+//                                Alignment.CenterVertically
+//                            )
+//                        )
+//
+//                        Text(
+//                            text = "$5.9",
+//                            color = Color(0xFF85bb65),
+//                            style = TextStyle(
+//                                fontSize = 15.sp
+//                            )
+//                        )
+//
+//
+//                    }
+//
+//                    Spacer(modifier = Modifier.padding(top = 10.dp))
+//
+//                    Text(
+//                        text = "800 Calories",
+//                        style = TextStyle(
+//                            fontSize = 17.sp
+//                        )
+//                    )
+//                    Spacer(modifier = Modifier.padding(top = 10.dp))
+//
+//                    Button(onClick = { }, modifier = Modifier.align(Alignment.CenterHorizontally)) {
+//                        Text(text = "ORDER NOW")
+//                    }
+//                }
+//            }
+//
+//
+//        }
 //            MVVMRecipeAppTheme {
 //                // A surface container using the 'background' color from the theme
 //                Surface(
