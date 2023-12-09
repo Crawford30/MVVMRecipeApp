@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName
  * Business model.
  * The network model ie the server data
  * Hence we need a mapper class to map the [domainmodel] to [networkmodel]
+ * RecipeNetworkEntity can be named as [RecipeNetworkDTO] DTO->Data Transfer Object
  */
 class RecipeNetworkEntity(
     @SerializedName("pk")
