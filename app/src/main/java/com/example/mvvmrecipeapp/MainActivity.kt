@@ -21,20 +21,22 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.Fragment
 import com.example.mvvmrecipeapp.ui.theme.MVVMRecipeAppTheme
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
 
 //class MainActivity : ComponentActivity() {
 
+/**
+ * Using Fragment with composable
+ */
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
 
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.main_container, RecipeListFragment())
-            .commit()
+
 
 //        setContent {
 //            Column {
