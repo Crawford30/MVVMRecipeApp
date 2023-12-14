@@ -18,8 +18,10 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.navigation.findNavController
 import com.example.mvvmrecipeapp.R
+import dagger.hilt.android.AndroidEntryPoint
 
 
+@AndroidEntryPoint
 class RecipeListFragment : Fragment() {
 
     override fun onCreateView(
@@ -39,7 +41,7 @@ class RecipeListFragment : Fragment() {
                     )
                     
                     Spacer(modifier = Modifier.padding(10.dp))
-                    
+
                     Button(onClick = {
                         findNavController().navigate(R.id.viewRecipe)
                     }) {
