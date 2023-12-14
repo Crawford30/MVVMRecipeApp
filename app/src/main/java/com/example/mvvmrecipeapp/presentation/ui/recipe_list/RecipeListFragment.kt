@@ -16,6 +16,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.mvvmrecipeapp.R
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +24,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RecipeListFragment : Fragment() {
+
+    private val viewModel: RecipeListViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -75,6 +78,12 @@ class RecipeListFragment : Fragment() {
 //        }
 //
 //        return view
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        println("VIEWMODEL token Fragment: ${viewModel.getToken()}")
+        println("VIEWMODEL repository Fragment: ${viewModel.getRepo()}")
     }
 
 }
