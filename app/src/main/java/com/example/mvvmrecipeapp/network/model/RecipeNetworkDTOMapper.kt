@@ -49,16 +49,16 @@ class RecipeNetworkDTOMapper : DomainMapper<RecipeNetworkDTO, Recipe> {
     }
 
     /**
-     * Converts a list of RecipeNetworkEntity to a list of Recipe
+     * Converts a list of RecipeNetworkDTO to a list of Recipe
      */
-    fun fromEntityList(initial: List<RecipeNetworkDTO>): List<Recipe>{
+    fun toDomainList(initial: List<RecipeNetworkDTO>): List<Recipe>{
         return initial.map { mapToDomainModel(it) }
     }
 
     /**
-     * Converts a list of Recipe to a list of RecipeNetworkEntity
+     * Converts a list of Recipe to a list of RecipeNetworkDTO
      */
-    fun toEntityList(initial: List<Recipe>): List<RecipeNetworkDTO>{
+    fun fromDomainList(initial: List<Recipe>): List<RecipeNetworkDTO>{
         return initial.map { mapFromDomainModel(it) }
     }
 
