@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
  * Hence we need a mapper class to map the [domainmodel] to [networkmodel]
  * RecipeNetworkEntity can be named as [RecipeNetworkDTO] DTO->Data Transfer Object
  */
-class RecipeNetworkEntity(
+data class RecipeNetworkDTO(
     @SerializedName("pk")
     var pk: Int? = null,
 

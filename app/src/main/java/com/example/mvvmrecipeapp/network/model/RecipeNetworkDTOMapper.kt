@@ -1,39 +1,39 @@
 package com.example.mvvmrecipeapp.network.model
 
 import com.example.mvvmrecipeapp.domain.model.Recipe
-import com.example.mvvmrecipeapp.util.EntityMapper
+import com.example.mvvmrecipeapp.util.DomainMapper
 
 /**
  * Maps the network data for easy conversion between the models
- * It implements the [EntityMapper]
+ * It implements the [DomainMapper]
  * https://youtu.be/yUk4NzkdmG8?list=PLgCYzUzKIBE_I0_tU5TvkfQpnmrP_9XV8&t=805
  */
-class RecipeNetworkMapper : EntityMapper<RecipeNetworkEntity, Recipe> {
+class RecipeNetworkDTOMapper : DomainMapper<RecipeNetworkDTO, Recipe> {
 
     /**
      * Used when getting data from the network
      */
-    override fun mapFromEntity(entity: RecipeNetworkEntity): Recipe {
+    override fun mapToDomainModel(model: RecipeNetworkDTO): Recipe {
         return Recipe(
-            id = entity.pk,
-            title = entity.title,
-            featuredImage = entity.featuredImage,
-            rating = entity.rating,
-            publisher = entity.publisher,
-            sourceUrl = entity.sourceUrl,
-            description = entity.description,
-            cookingInstructions = entity.cookingInstructions,
-            ingredients = entity.ingredients?: listOf(),
-            dateAdded = entity.dateAdded,
-            dateUpdated = entity.dateUpdated,
+            id = model.pk,
+            title = model.title,
+            featuredImage = model.featuredImage,
+            rating = model.rating,
+            publisher = model.publisher,
+            sourceUrl = model.sourceUrl,
+            description = model.description,
+            cookingInstructions = model.cookingInstructions,
+            ingredients = model.ingredients?: listOf(),
+            dateAdded = model.dateAdded,
+            dateUpdated = model.dateUpdated,
         )
     }
 
     /**
      * Used when publishing data to the network
      */
-    override fun mapToEntity(domainModel: Recipe): RecipeNetworkEntity {
-        return RecipeNetworkEntity(
+    override fun mapFromDomainModel(domainModel: Recipe): RecipeNetworkDTO {
+        return RecipeNetworkDTO(
             pk = domainModel.id,
             title = domainModel.title,
             featuredImage = domainModel.featuredImage,
@@ -51,15 +51,15 @@ class RecipeNetworkMapper : EntityMapper<RecipeNetworkEntity, Recipe> {
     /**
      * Converts a list of RecipeNetworkEntity to a list of Recipe
      */
-    fun fromEntityList(initial: List<RecipeNetworkEntity>): List<Recipe>{
-        return initial.map { mapFromEntity(it) }
+    fun fromEntityList(initial: List<RecipeNetworkDTO>): List<Recipe>{
+        return initial.map { mapToDomainModel(it) }
     }
 
     /**
      * Converts a list of Recipe to a list of RecipeNetworkEntity
      */
-    fun toEntityList(initial: List<Recipe>): List<RecipeNetworkEntity>{
-        return initial.map { mapToEntity(it) }
+    fun toEntityList(initial: List<Recipe>): List<RecipeNetworkDTO>{
+        return initial.map { mapFromDomainModel(it) }
     }
 
 

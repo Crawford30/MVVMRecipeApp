@@ -1,6 +1,6 @@
 package com.example.mvvmrecipeapp.network
 
-import com.example.mvvmrecipeapp.network.model.RecipeNetworkEntity
+import com.example.mvvmrecipeapp.network.model.RecipeNetworkDTO
 import com.example.mvvmrecipeapp.network.responses.RecipeSearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -24,12 +24,12 @@ interface RecipeRetrofitService {
     ): RecipeSearchResponse
 
     /**
-     *Get recipe by [id] (id is supplied as query parameter) that returns the [RecipeNetworkEntity]
+     *Get recipe by [id] (id is supplied as query parameter) that returns the [RecipeNetworkDTO]
      * https://food2fork.ca/api/recipe/get/?id=9
      */
     @GET("get")
     suspend fun get(
         @Header("Authorization") token: String,
         @Query("id") id: Int,
-        ): RecipeNetworkEntity
+        ): RecipeNetworkDTO
 }
