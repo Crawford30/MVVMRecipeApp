@@ -23,14 +23,21 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import com.example.mvvmrecipeapp.ui.theme.MVVMRecipeAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 import org.intellij.lang.annotations.JdkConstants.HorizontalAlignment
+import javax.inject.Inject
 
 //class MainActivity : ComponentActivity() {
 
 /**
  * Using Fragment with composable
  */
+
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
+
+    @Inject
+    lateinit var someRandomString: String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
