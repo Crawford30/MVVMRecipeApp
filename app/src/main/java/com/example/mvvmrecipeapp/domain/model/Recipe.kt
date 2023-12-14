@@ -1,8 +1,6 @@
 package com.example.mvvmrecipeapp.domain.model
 
 import android.os.Parcelable
-import androidx.fragment.app.Fragment
-import com.example.mvvmrecipeapp.RecipeFragment
 import kotlinx.android.parcel.Parcelize
 
 /**

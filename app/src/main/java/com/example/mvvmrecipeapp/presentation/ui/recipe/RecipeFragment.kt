@@ -1,4 +1,4 @@
-package com.example.mvvmrecipeapp
+package com.example.mvvmrecipeapp.presentation.ui.recipe
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,7 +8,6 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.TextStyle

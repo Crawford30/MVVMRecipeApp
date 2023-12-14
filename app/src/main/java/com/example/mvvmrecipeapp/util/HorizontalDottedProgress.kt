@@ -1,4 +1,4 @@
-package com.example.mvvmrecipeapp
+package com.example.mvvmrecipeapp.util
 
 import android.content.Context
 import android.graphics.Canvas

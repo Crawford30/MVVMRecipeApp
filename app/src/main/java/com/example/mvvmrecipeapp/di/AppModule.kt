@@ -2,7 +2,7 @@ package com.example.mvvmrecipeapp.di
 
 
 import android.content.Context
-import com.example.mvvmrecipeapp.BaseApplication
+import com.example.mvvmrecipeapp.presentation.BaseApplication
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -22,7 +22,7 @@ object AppModule {
      */
     @Singleton
     @Provides
-     fun provideApplication(@ApplicationContext app: Context):BaseApplication{
+     fun provideApplication(@ApplicationContext app: Context): BaseApplication {
          return app as BaseApplication
      }
 
