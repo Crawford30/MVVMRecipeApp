@@ -1,25 +1,30 @@
 package com.example.mvvmrecipeapp.presentation.ui.recipe_list
 
 
+import android.graphics.drawable.Icon
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material.Button
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
@@ -49,7 +54,10 @@ class RecipeListFragment : Fragment() {
 
 
         return ComposeView(requireContext()).apply {
+
             setContent {
+                val localFocusManager = LocalFocusManager.current
+
 
                 /**
                  *The fragment change a bit since we're using MutableState
@@ -74,14 +82,49 @@ class RecipeListFragment : Fragment() {
                  */
 
                 Column() {
-                    TextField(
-                        value = query.value,
-                        onValueChange = { newValue ->
-                            viewModel.onQueryChanged(newValue)
+                    Surface(
+                        modifier = Modifier.fillMaxWidth(),
+                        elevation = 8.dp,
+                        color = MaterialTheme.colors.primary,
+                    ) {
+
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                        ) {
+                            TextField(
+                                modifier = Modifier
+                                    .fillMaxWidth(fraction = 0.9f)
+                                    .padding(8.dp),
+                                value = query.value,
+                                onValueChange = { newValue ->
+                                    viewModel.onQueryChanged(newValue)
 //                            query.value = newValue
+                                },
+                                label = {
+                                    Text(text = "Search")
+                                },
+                                keyboardOptions = KeyboardOptions(
+                                    keyboardType = KeyboardType.Text,
+                                    imeAction = ImeAction.Search,
+                                ),
+                                colors = TextFieldDefaults.textFieldColors(
+                                    backgroundColor = MaterialTheme.colors.surface
+                                ),
+                                leadingIcon = {
+                                    Icon(
+                                        imageVector = Icons.Filled.Search,
+                                        contentDescription = ""
+                                    )
+                                },
+
+
+                                )
+
+
                         }
-                    )
-                    Spacer(modifier = Modifier.padding(16.dp))
+                    }
+
                     LazyColumn() {
                         itemsIndexed(
                             items = recipes
@@ -93,6 +136,7 @@ class RecipeListFragment : Fragment() {
 
 
             }
+
         }
 //        val view = inflater.inflate(
 //            R.layout.fragment_recipe_list, container, false
