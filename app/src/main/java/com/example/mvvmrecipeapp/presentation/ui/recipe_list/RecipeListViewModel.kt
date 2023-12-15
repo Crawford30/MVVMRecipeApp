@@ -1,6 +1,8 @@
 package com.example.mvvmrecipeapp.presentation.ui.recipe_list
 
 
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,15 +27,24 @@ class RecipeListViewModel @Inject constructor(
      * Create mutable live data to watch  changes and pass data to the UI
      *
      */
-    private val _recipeList: MutableLiveData<List<Recipe>> = MutableLiveData() //The value is private and the UI cant see it
+//    private val _recipeList: MutableLiveData<List<Recipe>> = MutableLiveData() //The value is private and the UI cant see it
 
-
-
+//
     /**
-     * For UI to see it, we create another variable(Its a readonly value)
-     * We then observe this value in the activity or fragment
+     * Using Compose mutableState
+     *
      */
-    val recipes: LiveData<List<Recipe>> get() = _recipeList
+
+     val recipes: MutableState<List<Recipe>> = mutableStateOf(ArrayList())
+
+//    /**
+//     * For UI to see it, we create another variable(Its a readonly value)
+//     * We then observe this value in the activity or fragment
+//     */
+//    val recipes: LiveData<List<Recipe>> get() = _recipeList
+
+
+
 
     /**
      * Get the data
@@ -50,7 +61,7 @@ class RecipeListViewModel @Inject constructor(
             /**
              * Set the value
              */
-            _recipeList.value =  result
+            recipes.value =  result
         }
     }
 

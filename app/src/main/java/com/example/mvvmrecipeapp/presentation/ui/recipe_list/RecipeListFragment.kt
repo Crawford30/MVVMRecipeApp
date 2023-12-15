@@ -2,6 +2,7 @@ package com.example.mvvmrecipeapp.presentation.ui.recipe_list
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.mvvmrecipeapp.R
+import com.example.mvvmrecipeapp.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -33,13 +35,27 @@ class RecipeListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        viewModel.recipes.observe(viewLifecycleOwner, { recipes ->
-            //we set the value to recycle view here
+//        viewModel.recipes.observe(viewLifecycleOwner, { recipes ->
+//            //we set the value to recycle view here
+//
+//        })
 
-        })
+
 
         return ComposeView(requireContext()).apply {
             setContent {
+
+                /**
+                 *The fragment change a bit since we're using MutableState
+                 * We get the value inside composables
+                 */
+                val recipes = viewModel.recipes.value //anytime the list, the value changes and any composable using this value will also change
+
+                for (recipe in recipes){
+                    print("RECIPES: ${recipe}")
+                    Log.d(TAG, "RECIPE: ${recipe.title}")
+                }
+
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
                         "RECIPE LIST",
