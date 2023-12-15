@@ -67,11 +67,18 @@ class RecipeListFragment : Fragment() {
                 val query = remember {
                     mutableStateOf("beef")
                 }
+
+                /**
+                 * Or we can use the [savedInstanceState] from JC'
+                 * val _query = savedInstanceState{ "beef" }
+                 */
+
                 Column() {
                     TextField(
                         value = query.value,
                         onValueChange = { newValue ->
-                            query.value = newValue
+                            viewModel.onQueryChanged(newValue)
+//                            query.value = newValue
                         }
                     )
                     Spacer(modifier = Modifier.padding(16.dp))

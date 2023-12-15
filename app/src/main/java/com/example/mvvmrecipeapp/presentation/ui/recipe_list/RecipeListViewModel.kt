@@ -44,6 +44,9 @@ class RecipeListViewModel @Inject constructor(
 //    val recipes: LiveData<List<Recipe>> get() = _recipeList
 
 
+    //Since query input lost value on configuration, we need to persist it using the viewmodel
+    val query: MutableState<String> = mutableStateOf("chicken")
+
     /**
      * Get the data
      */
@@ -60,11 +63,18 @@ class RecipeListViewModel @Inject constructor(
             )
 
             /**
-             * Set the value
+             *Set the value
              */
             recipes.value = result
         }
 
+    }
+
+    /**
+     *This function is used to change the value of the input field since we can do it directly in the fragment
+     */
+    fun onQueryChanged(query: String) {
+        this.query.value = query
     }
 
 
