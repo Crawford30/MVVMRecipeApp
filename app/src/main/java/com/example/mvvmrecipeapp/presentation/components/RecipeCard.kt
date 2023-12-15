@@ -34,7 +34,9 @@ fun RecipeCard(
         modifier = Modifier
             .padding(
                 top = 6.dp,
-                bottom = 6.dp
+                bottom = 6.dp,
+                end = 6.dp,
+                start = 6.dp
             )
             .fillMaxWidth()
             .clickable { (onClick) },

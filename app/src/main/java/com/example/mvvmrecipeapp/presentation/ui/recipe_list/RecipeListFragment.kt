@@ -9,6 +9,8 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.ui.Modifier
@@ -20,6 +22,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.mvvmrecipeapp.R
+import com.example.mvvmrecipeapp.presentation.components.RecipeCard
 import com.example.mvvmrecipeapp.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -41,7 +44,6 @@ class RecipeListFragment : Fragment() {
 //        })
 
 
-
         return ComposeView(requireContext()).apply {
             setContent {
 
@@ -51,29 +53,17 @@ class RecipeListFragment : Fragment() {
                  */
                 val recipes = viewModel.recipes.value //anytime the list, the value changes and any composable using this value will also change
 
-                for (recipe in recipes){
-                    print("RECIPES: ${recipe}")
-                    Log.d(TAG, "RECIPE: ${recipe.title}")
-                }
+                LazyColumn(
 
-                Column(modifier = Modifier.padding(16.dp)) {
-                    Text(
-                        "RECIPE LIST",
-                        style = TextStyle(
-                            fontSize = 26.sp
-                        )
-                    )
-                    
-                    Spacer(modifier = Modifier.padding(10.dp))
-
-                    Button(onClick = {
-                        findNavController().navigate(R.id.viewRecipe)
-                    }) {
-                        Text("TO RECIPE FRAGMENT")
-                        
+                ){
+                    itemsIndexed(
+                        items = recipes
+                    ){index, item ->  
+                        RecipeCard(recipes = item, onClick = {})
                     }
-
                 }
+
+
             }
         }
 //        val view = inflater.inflate(

@@ -35,7 +35,7 @@ class RecipeListViewModel @Inject constructor(
      *
      */
 
-     val recipes: MutableState<List<Recipe>> = mutableStateOf(ArrayList())
+    val recipes: MutableState<List<Recipe>> = mutableStateOf(ArrayList())
 
 //    /**
 //     * For UI to see it, we create another variable(Its a readonly value)
@@ -44,15 +44,16 @@ class RecipeListViewModel @Inject constructor(
 //    val recipes: LiveData<List<Recipe>> get() = _recipeList
 
 
-
-
     /**
      * Get the data
      */
     init {
+        newSearch()
+    }
 
+    fun newSearch() {
         viewModelScope.launch {
-         val result =    repository.search(
+            val result = repository.search(
                 token = token,
                 page = 1,
                 query = "chicken"
@@ -61,16 +62,15 @@ class RecipeListViewModel @Inject constructor(
             /**
              * Set the value
              */
-            recipes.value =  result
+            recipes.value = result
         }
+
     }
 
 
     fun getRepo() = repository
 
     fun getToken() = token
-
-
 
 
 }
