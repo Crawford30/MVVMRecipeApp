@@ -51,7 +51,7 @@ class RecipeListViewModel @Inject constructor(
         newSearch()
     }
 
-    fun newSearch() {
+    private fun newSearch() {
         viewModelScope.launch {
             val result = repository.search(
                 token = token,
