@@ -9,11 +9,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import coil.compose.rememberAsyncImagePainter
+import coil.compose.rememberImagePainter
+import coil.request.ImageRequest
 import com.example.mvvmrecipeapp.R
 import com.example.mvvmrecipeapp.domain.model.Recipe
+import com.example.mvvmrecipeapp.util.loadPicture
 
 /**
  *Creating the equivalent ViewHolder layout for recycler using composables
@@ -26,6 +32,7 @@ fun RecipeCard(
     recipes: Recipe,
     onClick: () -> Unit
 ) {
+    val DEFAULT_RECIPE_IMAGE = R.drawable.empty_plate
     /**
      *CardView equivalent in  JC is [card]
      */
@@ -49,14 +56,33 @@ fun RecipeCard(
              *Recipe Image
              */
             recipes.featuredImage?.let { url ->
+                // val image = loadPicture(url = url, defaultImage = DEFAULT_RECIPE_IMAGE).value
+                val image: Painter = painterResource(id = R.drawable.empty_plate)
+
+                val painter = //Crossfade animation between images
+                    rememberAsyncImagePainter(
+                        ImageRequest.Builder //Used while loading
+                        //Used if data is null
+                        //Used when loading returns with error
+                            (LocalContext.current).data(data = url)
+                            .apply<ImageRequest.Builder>(block = fun ImageRequest.Builder.() {
+                                crossfade(true) //Crossfade animation between images
+                                placeholder(DEFAULT_RECIPE_IMAGE) //Used while loading
+                                fallback(DEFAULT_RECIPE_IMAGE) //Used if data is null
+                                error(DEFAULT_RECIPE_IMAGE) //Used when loading returns with error
+                            }).build()
+                    )
+
                 Image(
-                    painter = painterResource(id = R.drawable.empty_plate),
+                    painter = painter,
                     contentDescription = "",
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(225.dp),
                     contentScale = ContentScale.Crop
                 )
+
+
             }
             /**
              *Recipe Title
