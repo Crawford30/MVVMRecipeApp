@@ -33,6 +33,11 @@ class RecipeListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
+        viewModel.recipes.observe(viewLifecycleOwner, { recipes ->
+            //we set the value to recycle view here
+
+        })
+
         return ComposeView(requireContext()).apply {
             setContent {
                 Column(modifier = Modifier.padding(16.dp)) {
@@ -80,10 +85,5 @@ class RecipeListFragment : Fragment() {
 //        return view
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        println("VIEWMODEL token Fragment: ${viewModel.getToken()}")
-        println("VIEWMODEL repository Fragment: ${viewModel.getRepo()}")
-    }
 
 }
