@@ -31,7 +31,7 @@ fun CircularIndeterminateProgressBar(isDisplayed: Boolean) {
         BoxWithConstraints(
             modifier = Modifier.fillMaxSize()
         ) {
-            val constraints = if (minHeight < 600.dp) { //portrait mode
+            val constraints = if (minWidth < 600.dp) { //portrait mode
                 myDecoupledConstraints(0.3f)
             } else {
                 myDecoupledConstraints(0.7f)
