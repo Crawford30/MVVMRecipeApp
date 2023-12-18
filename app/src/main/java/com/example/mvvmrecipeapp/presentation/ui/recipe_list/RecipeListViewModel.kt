@@ -50,6 +50,9 @@ class RecipeListViewModel @Inject constructor(
     //Keep track of selectedCategory
     val selectedCategory: MutableState<FoodCategory?> = mutableStateOf(null)
 
+    //Keeping track of scroll position
+    var categoryScrollPosition: Float = 0f
+
     /**
      * Get the data
      */
@@ -89,6 +92,10 @@ class RecipeListViewModel @Inject constructor(
         selectedCategory.value = newCategory
 
         onQueryChanged(category) //then change the query parameter
+    }
+
+    fun onChangeCategoryPosition(position: Float) {
+        categoryScrollPosition = position
     }
 
     fun getRepo() = repository

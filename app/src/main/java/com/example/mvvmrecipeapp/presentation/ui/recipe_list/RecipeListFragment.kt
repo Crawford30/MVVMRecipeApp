@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
@@ -39,6 +40,7 @@ import com.example.mvvmrecipeapp.presentation.components.FoodCategoryChip
 import com.example.mvvmrecipeapp.presentation.components.RecipeCard
 import com.example.mvvmrecipeapp.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 import java.util.Locale.Category
 
 
@@ -64,6 +66,7 @@ class RecipeListFragment : Fragment() {
             setContent {
                 val keyboardController = LocalFocusManager.current
                 val scrollState = rememberScrollState()
+                val coroutineScope = rememberCoroutineScope()
 
                 /**
                  *The fragment change a bit since we're using MutableState
@@ -154,9 +157,13 @@ class RecipeListFragment : Fragment() {
                             Row(
                                 Modifier
                                     .fillMaxWidth()
-                                    .padding(top = 8.dp, bottom = 8.dp)
                                     .horizontalScroll(scrollState)
+                                    .padding(top = 8.dp, bottom = 8.dp)
+
                             ) {
+                                coroutineScope.launch {
+                                    scrollState.scrollTo(viewModel.categoryScrollPosition.toInt())
+                                }
                                 for (category in getAllFoodCategories()) {
 
                                     FoodCategoryChip(
@@ -164,6 +171,7 @@ class RecipeListFragment : Fragment() {
                                         isSelected = selectedCategory == category,
                                         onSelectedCategoryChanged = {
                                             viewModel.onSelectedCategoryChanged(it)
+                                            viewModel.onChangeCategoryPosition(scrollState.value.toFloat())
                                         },
                                         onExecuteSearch = viewModel::newSearch // viewModel::newSearch delegate a function
 //                                        onExecuteSearch = {
