@@ -98,9 +98,7 @@ class RecipeListFragment : Fragment() {
                  */
 
                 Column() {
-
                     //Call the AppBar Search
-
                     SearchAppBar(
                         query = query,
                         onQueryChanged = viewModel::onQueryChanged,
