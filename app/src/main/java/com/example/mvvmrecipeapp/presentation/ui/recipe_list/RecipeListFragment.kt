@@ -82,7 +82,11 @@ class RecipeListFragment : Fragment() {
 //                    mutableStateOf("beef")
 //                }
 
+                //Mutable state for search query
                 val query = viewModel.query.value
+
+                //Mutable state for selected category
+                val selectedCategory = viewModel.selectedCategory.value
 
                 /**
                  * Or we can use the [savedInstanceState] from JC'
@@ -127,7 +131,7 @@ class RecipeListFragment : Fragment() {
                                     ),
 
                                     keyboardActions = KeyboardActions(onSearch = {
-                                        viewModel.newSearch(query)
+                                        viewModel.newSearch()
                                         keyboardController?.clearFocus()
                                     }),
 
@@ -150,16 +154,22 @@ class RecipeListFragment : Fragment() {
                             Row(
                                 Modifier
                                     .fillMaxWidth()
+                                    .padding(top = 8.dp, bottom = 8.dp)
                                     .horizontalScroll(scrollState)
                             ) {
                                 for (category in getAllFoodCategories()) {
 
                                     FoodCategoryChip(
                                         category = category.value,
-                                        onExecuteSearch = {
-                                            viewModel.onQueryChanged(category.value) //Changing the query //csn pass it,  viewModel.onQueryChanged(it)
-                                            viewModel.newSearch(category.value) //executing the search
-                                        }
+                                        isSelected = selectedCategory == category,
+                                        onSelectedCategoryChanged = {
+                                            viewModel.onSelectedCategoryChanged(it)
+                                        },
+                                        onExecuteSearch = viewModel::newSearch // viewModel::newSearch delegate a function
+//                                        onExecuteSearch = {
+//                                            viewModel.onQueryChanged(category.value) //Changing the query //csn pass it,  viewModel.onQueryChanged(it)
+//                                            viewModel.newSearch(category.value) //executing the search
+//                                        }
                                     )
 //                                    Text(
 //                                        text = category.value,

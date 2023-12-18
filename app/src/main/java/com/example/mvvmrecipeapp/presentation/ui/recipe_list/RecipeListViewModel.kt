@@ -45,21 +45,24 @@ class RecipeListViewModel @Inject constructor(
 
 
     //Since query input lost value on configuration, we need to persist it using the viewmodel
-    val query: MutableState<String> = mutableStateOf("chicken")
+    val query: MutableState<String> = mutableStateOf("")
+
+    //Keep track of selectedCategory
+    val selectedCategory: MutableState<FoodCategory?> = mutableStateOf(null)
 
     /**
      * Get the data
      */
     init {
-        newSearch(query.value) //newSearch("chicken")
+        newSearch() //newSearch("chicken")
     }
 
-    fun newSearch(query: String) {
+    fun newSearch() {
         viewModelScope.launch {
             val result = repository.search(
                 token = token,
                 page = 1,
-                query = query
+                query = query.value
             )
 
             /**
@@ -77,6 +80,16 @@ class RecipeListViewModel @Inject constructor(
         this.query.value = query
     }
 
+    /**
+     *This function is used to change the value of selected Category
+     */
+
+    fun onSelectedCategoryChanged(category: String) {
+        val newCategory = getFoodCategory(category) //get the enum value
+        selectedCategory.value = newCategory
+
+        onQueryChanged(category) //then change the query parameter
+    }
 
     fun getRepo() = repository
 
