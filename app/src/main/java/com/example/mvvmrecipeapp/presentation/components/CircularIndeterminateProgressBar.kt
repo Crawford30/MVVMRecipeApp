@@ -7,48 +7,59 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import androidx.constraintlayout.compose.ConstraintSet
 
 
+/**
+ * Center a circular indeterminate progress bar with optional vertical bias.
+ *
+ * NOTE: You do not need a ConstraintLayout here. A Row would have been perfectly fine.
+ * I just left it here as an example.
+ */
 @Composable
 fun CircularIndeterminateProgressBar(isDisplayed: Boolean) {
+
     if (isDisplayed) {
-        //Using Constraint Layout
-        ConstraintLayout(modifier = Modifier.fillMaxSize()) {
-            //Giving an id in compose
-            val (progressBar, text) = createRefs() //creates an id
 
-            val topGuideLine = createGuidelineFromTop(0.3f) //creates a guideline 30% from the to
+        //WithConstraint composable helps to know wether the device is in portrait or landscape
+        BoxWithConstraints(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            val constraints = if (minHeight < 600.dp) { //portrait mode
+                myDecoupledConstraints(0.3f)
+            } else {
+                myDecoupledConstraints(0.7f)
+            }
 
-            CircularProgressIndicator(
-                modifier = Modifier.constrainAs(progressBar) {
-                    //Give access to top, bottom, etc
-                    top.linkTo(topGuideLine)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                },
-                color = MaterialTheme.colors.primary
-            )
+            //Using Constraint Layout
+            ConstraintLayout(modifier = Modifier.fillMaxSize(),
+            constraintSet =  constraints) {
+                CircularProgressIndicator(
+                    modifier = Modifier.layoutId("progressBar"),
+                    color = MaterialTheme.colors.primary
+                )
 
-            Text(
-                text = "Loading...",
-                style = TextStyle(
-                    color = Color.Black,
-                    fontSize = 15.sp
-                ),
-                modifier = Modifier.constrainAs(text) {
-                    top.linkTo(progressBar.bottom)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
+                Text(
+                    text = "Loading...",
+                    style = TextStyle(
+                        color = Color.Black,
+                        fontSize = 15.sp
+                    ),
 
-                }
-            )
+                    modifier = Modifier.layoutId("text"),
+                )
+
+            }
 
         }
+
+
 //        Row(
 //            modifier = Modifier
 //                .fillMaxWidth()
@@ -60,4 +71,29 @@ fun CircularIndeterminateProgressBar(isDisplayed: Boolean) {
 //            )
 //        }
     }
+}
+
+
+/**
+ *This function is used to set constraint based on wether the device is in portrait or landscape mode
+ */
+private fun myDecoupledConstraints(verticalBias: Float): ConstraintSet {
+    return ConstraintSet {
+        val guideline = createGuidelineFromTop(verticalBias)
+        val progressBar = createRefFor("progressBar")
+        val text = createRefFor("text")
+
+        constrain(progressBar) {
+            top.linkTo(guideline)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }
+
+        constrain(text) {
+            top.linkTo(progressBar.bottom)
+            start.linkTo(parent.start)
+            end.linkTo(parent.end)
+        }
+    }
+
 }
