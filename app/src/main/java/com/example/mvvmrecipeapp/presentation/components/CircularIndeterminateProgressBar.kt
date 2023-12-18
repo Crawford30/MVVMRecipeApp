@@ -22,11 +22,12 @@ fun CircularIndeterminateProgressBar(isDisplayed: Boolean) {
             //Giving an id in compose
             val (progressBar, text) = createRefs() //creates an id
 
+            val topGuideLine = createGuidelineFromTop(0.3f) //creates a guideline 30% from the to
+
             CircularProgressIndicator(
                 modifier = Modifier.constrainAs(progressBar) {
                     //Give access to top, bottom, etc
-                    top.linkTo(parent.top)
-                    bottom.linkTo(parent.bottom)
+                    top.linkTo(topGuideLine)
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 },
