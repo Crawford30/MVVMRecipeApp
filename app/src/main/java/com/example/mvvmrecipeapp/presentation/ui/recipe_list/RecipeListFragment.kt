@@ -157,8 +157,8 @@ class RecipeListFragment : Fragment() {
                                     FoodCategoryChip(
                                         category = category.value,
                                         onExecuteSearch = {
-                                            viewModel.onQueryChanged(category.value) //csn pass it,  viewModel.onQueryChanged(it)
-                                            viewModel.newSearch(category.value)
+                                            viewModel.onQueryChanged(category.value) //Changing the query //csn pass it,  viewModel.onQueryChanged(it)
+                                            viewModel.newSearch(category.value) //executing the search
                                         }
                                     )
 //                                    Text(
