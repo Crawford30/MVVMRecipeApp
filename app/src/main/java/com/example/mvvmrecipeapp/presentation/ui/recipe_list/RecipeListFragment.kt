@@ -7,9 +7,12 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -34,6 +37,7 @@ import com.example.mvvmrecipeapp.R
 import com.example.mvvmrecipeapp.presentation.components.RecipeCard
 import com.example.mvvmrecipeapp.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.Locale.Category
 
 
 @AndroidEntryPoint
@@ -56,9 +60,8 @@ class RecipeListFragment : Fragment() {
         return ComposeView(requireContext()).apply {
 
             setContent {
-
                 val keyboardController = LocalFocusManager.current
-
+                val scrollState = rememberScrollState()
 
                 /**
                  *The fragment change a bit since we're using MutableState
@@ -91,55 +94,92 @@ class RecipeListFragment : Fragment() {
                         color = MaterialTheme.colors.primary,
                     ) {
 
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                        ) {
-                            TextField(
+
+                        Column {
+                            /**
+                             *Horizontal category scroll view
+                             */
+                            Row(
                                 modifier = Modifier
-                                    .fillMaxWidth(fraction = 0.9f)
-                                    .padding(8.dp),
-                                value = query,
-                                onValueChange = { newValue ->
-                                    viewModel.onQueryChanged(newValue)
+                                    .fillMaxWidth()
+                            ) {
+                                TextField(
+                                    modifier = Modifier
+                                        .fillMaxWidth(fraction = 0.9f)
+                                        .padding(8.dp),
+                                    value = query,
+                                    onValueChange = { newValue ->
+                                        viewModel.onQueryChanged(newValue)
 //                            query.value = newValue
-                                },
+                                    },
 
-                                label = {
-                                    Text(
-                                        text = "Search",
-                                    )
-                                },
+                                    label = {
+                                        Text(
+                                            text = "Search",
+                                        )
+                                    },
 
-                                keyboardOptions = KeyboardOptions(
-                                    keyboardType = KeyboardType.Text,
-                                    imeAction = ImeAction.Search,
-                                ),
+                                    keyboardOptions = KeyboardOptions(
+                                        keyboardType = KeyboardType.Text,
+                                        imeAction = ImeAction.Search,
+                                    ),
 
-                                keyboardActions = KeyboardActions(onSearch = {
-                                    viewModel.newSearch(query)
-                                    keyboardController?.clearFocus()
-                                }),
+                                    keyboardActions = KeyboardActions(onSearch = {
+                                        viewModel.newSearch(query)
+                                        keyboardController?.clearFocus()
+                                    }),
 
 
-                                leadingIcon = {
-                                    Icon(
-                                        imageVector = Icons.Filled.Search,
-                                        contentDescription = ""
-                                    )
+                                    leadingIcon = {
+                                        Icon(
+                                            imageVector = Icons.Filled.Search,
+                                            contentDescription = ""
+                                        )
 
-                                },
-                                colors = TextFieldDefaults.textFieldColors(
-                                    backgroundColor = MaterialTheme.colors.surface,
-                                    textColor = MaterialTheme.colors.primary
-
-                                ),
-
+                                    },
+                                    colors = TextFieldDefaults.textFieldColors(
+                                        backgroundColor = MaterialTheme.colors.surface,
+                                        textColor = MaterialTheme.colors.primary
+                                    ),
                                 )
+                            }
+
+
+                            Row(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .horizontalScroll(scrollState)
+                            ) {
+                                for (category in getAllFoodCategories()) {
+                                    Text(
+                                        text = category.value,
+                                        style = MaterialTheme.typography.body2,
+                                        color = MaterialTheme.colors.onBackground,
+                                        modifier = Modifier.padding(8.dp)
+                                    )
+                                }
+                            }
+
+//                        LazyRow(modifier = Modifier.fillMaxWidth()) {
+//                            itemsIndexed(items = getAllFoodCategories()) { _, item ->
+//                                Text(
+//                                    text = item.name,
+//                                    style = MaterialTheme.typography.body1,
+//                                    color = MaterialTheme.colors.onBackground,
+//                                    modifier = Modifier.padding(8.dp)
+//                                )
+//
+//                            }
+//
+//                        }
 
 
                         }
+
+
                     }
+
+
 
                     LazyColumn() {
                         itemsIndexed(
