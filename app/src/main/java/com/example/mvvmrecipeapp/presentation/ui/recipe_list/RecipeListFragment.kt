@@ -36,6 +36,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.mvvmrecipeapp.R
+import com.example.mvvmrecipeapp.presentation.components.CircularIndeterminateProgressBar
 import com.example.mvvmrecipeapp.presentation.components.FoodCategoryChip
 import com.example.mvvmrecipeapp.presentation.components.RecipeCard
 import com.example.mvvmrecipeapp.presentation.components.SearchAppBar
@@ -92,6 +93,9 @@ class RecipeListFragment : Fragment() {
                 //Mutable state for selected category
                 val selectedCategory = viewModel.selectedCategory.value
 
+                //loading state
+                val isLoading = viewModel.loading.value
+
                 /**
                  * Or we can use the [savedInstanceState] from JC'
                  * val _query = savedInstanceState{ "beef" }
@@ -108,6 +112,9 @@ class RecipeListFragment : Fragment() {
                         onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
                         onChangeCategoryPosition = viewModel::onChangeCategoryPosition
                     )
+
+                    
+                    CircularIndeterminateProgressBar(isDisplayed = isLoading)
 
                     LazyColumn() {
                         itemsIndexed(

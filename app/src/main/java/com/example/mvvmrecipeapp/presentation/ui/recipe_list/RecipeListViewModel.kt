@@ -10,6 +10,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.mvvmrecipeapp.domain.model.Recipe
 import com.example.mvvmrecipeapp.repository.RecipeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
@@ -53,6 +54,9 @@ class RecipeListViewModel @Inject constructor(
     //Keeping track of scroll position
     var categoryScrollPosition: Float = 0f
 
+    //Progress bar state
+    val loading  = mutableStateOf(false)
+
     /**
      * Get the data
      */
@@ -61,7 +65,11 @@ class RecipeListViewModel @Inject constructor(
     }
 
     fun newSearch() {
+        loading.value = true //set loading to true
+
+
         viewModelScope.launch {
+            delay(2000)
             val result = repository.search(
                 token = token,
                 page = 1,
@@ -72,6 +80,8 @@ class RecipeListViewModel @Inject constructor(
              *Set the value
              */
             recipes.value = result
+            //If we get results, we reset the loading state
+            loading.value = false
         }
 
     }
