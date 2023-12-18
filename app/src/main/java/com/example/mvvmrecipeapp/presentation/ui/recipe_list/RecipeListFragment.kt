@@ -122,7 +122,7 @@ class RecipeListFragment : Fragment() {
                             }
                         }
 
-                        CircularIndeterminateProgressBar(isDisplayed = isLoading)
+                        CircularIndeterminateProgressBar(isDisplayed = isLoading, 0.3f)
 
                     }
 

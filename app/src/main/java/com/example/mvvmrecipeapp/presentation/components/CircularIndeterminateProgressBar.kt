@@ -23,41 +23,37 @@ import androidx.constraintlayout.compose.ConstraintSet
  * I just left it here as an example.
  */
 @Composable
-fun CircularIndeterminateProgressBar(isDisplayed: Boolean) {
+fun CircularIndeterminateProgressBar(isDisplayed: Boolean, verticalBias: Float) {
 
     if (isDisplayed) {
 
-        //WithConstraint composable helps to know wether the device is in portrait or landscape
-        BoxWithConstraints(
-            modifier = Modifier.fillMaxSize()
+        //Using Constraint Layout
+        ConstraintLayout(
+            modifier = Modifier.fillMaxSize(),
         ) {
-            val constraints = if (minWidth < 600.dp) { //portrait mode
-                myDecoupledConstraints(0.3f)
-            } else {
-                myDecoupledConstraints(0.7f)
-            }
-
-            //Using Constraint Layout
-            ConstraintLayout(modifier = Modifier.fillMaxSize(),
-            constraintSet =  constraints) {
-                CircularProgressIndicator(
-                    modifier = Modifier.layoutId("progressBar"),
-                    color = MaterialTheme.colors.primary
-                )
-
-                Text(
-                    text = "Loading...",
-                    style = TextStyle(
-                        color = Color.Black,
-                        fontSize = 15.sp
-                    ),
-
-                    modifier = Modifier.layoutId("text"),
-                )
-
-            }
+            val (progressBar) = createRefs()
+            val topBias = createGuidelineFromTop(verticalBias)
+            CircularProgressIndicator(
+                modifier = Modifier
+                    .constrainAs(progressBar) {
+                        top.linkTo(topBias)
+                        end.linkTo(parent.end)
+                        start.linkTo(parent.start)
+                    },
+                color = MaterialTheme.colors.primary
+            )
 
         }
+        //WithConstraint composable helps to know wether the device is in portrait or landscape
+//        BoxWithConstraints(
+//            modifier = Modifier.fillMaxSize()
+//        ) {
+//            val constraints = if (minWidth < 600.dp) { //portrait mode
+//                myDecoupledConstraints(0.3f)
+//            } else {
+//                myDecoupledConstraints(0.7f)
+//            }
+//        }
 
 
 //        Row(
