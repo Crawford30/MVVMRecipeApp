@@ -55,7 +55,7 @@ class RecipeListViewModel @Inject constructor(
     var categoryScrollPosition: Float = 0f
 
     //Progress bar state
-    val loading  = mutableStateOf(false)
+    val loading = mutableStateOf(false)
 
     /**
      * Get the data
@@ -70,6 +70,9 @@ class RecipeListViewModel @Inject constructor(
 
         viewModelScope.launch {
             delay(2000)
+
+            resetSearchState()
+
             val result = repository.search(
                 token = token,
                 page = 1,
@@ -104,9 +107,34 @@ class RecipeListViewModel @Inject constructor(
         onQueryChanged(category) //then change the query parameter
     }
 
+
+    /**
+     *This function is used to change the category position
+     */
     fun onChangeCategoryPosition(position: Float) {
         categoryScrollPosition = position
     }
+
+    /**
+     *This function is used to clear the selected category
+     */
+    private fun clearSelectedCategory() {
+        selectedCategory.value = null
+    }
+
+    /**
+     *This function is used to reset the search state
+     */
+
+    private fun resetSearchState() {
+        recipes.value = listOf() //reset recipe list
+
+        //If the selected category is not equal to query.value, we clear it
+        if (selectedCategory.value?.value != query.value) {
+            clearSelectedCategory()
+        }
+    }
+
 
     fun getRepo() = repository
 
