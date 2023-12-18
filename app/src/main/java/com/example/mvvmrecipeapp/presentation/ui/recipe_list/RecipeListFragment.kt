@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -34,6 +35,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.mvvmrecipeapp.R
+import com.example.mvvmrecipeapp.presentation.components.FoodCategoryChip
 import com.example.mvvmrecipeapp.presentation.components.RecipeCard
 import com.example.mvvmrecipeapp.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
@@ -91,7 +93,7 @@ class RecipeListFragment : Fragment() {
                     Surface(
                         modifier = Modifier.fillMaxWidth(),
                         elevation = 8.dp,
-                        color = MaterialTheme.colors.primary,
+                        color = Color.White,
                     ) {
 
 
@@ -151,12 +153,20 @@ class RecipeListFragment : Fragment() {
                                     .horizontalScroll(scrollState)
                             ) {
                                 for (category in getAllFoodCategories()) {
-                                    Text(
-                                        text = category.value,
-                                        style = MaterialTheme.typography.body2,
-                                        color = MaterialTheme.colors.onBackground,
-                                        modifier = Modifier.padding(8.dp)
+
+                                    FoodCategoryChip(
+                                        category = category.value,
+                                        onExecuteSearch = {
+                                            viewModel.onQueryChanged(category.value) //csn pass it,  viewModel.onQueryChanged(it)
+                                            viewModel.newSearch(category.value)
+                                        }
                                     )
+//                                    Text(
+//                                        text = category.value,
+//                                        style = MaterialTheme.typography.body2,
+//                                        color = MaterialTheme.colors.onBackground,
+//                                        modifier = Modifier.padding(8.dp)
+//                                    )
                                 }
                             }
 
