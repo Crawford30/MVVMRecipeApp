@@ -56,7 +56,8 @@ class RecipeListFragment : Fragment() {
         return ComposeView(requireContext()).apply {
 
             setContent {
-                val localFocusManager = LocalFocusManager.current
+
+                val keyboardController = LocalFocusManager.current
 
 
                 /**
@@ -72,9 +73,11 @@ class RecipeListFragment : Fragment() {
                  * remember can store both mutable or immutable object
                  * In fragment its private val query = ""
                  */
-                val query = remember {
-                    mutableStateOf("beef")
-                }
+//                val query = remember {
+//                    mutableStateOf("beef")
+//                }
+
+                val query = viewModel.query.value
 
                 /**
                  * Or we can use the [savedInstanceState] from JC'
@@ -96,28 +99,41 @@ class RecipeListFragment : Fragment() {
                                 modifier = Modifier
                                     .fillMaxWidth(fraction = 0.9f)
                                     .padding(8.dp),
-                                value = query.value,
+                                value = query,
                                 onValueChange = { newValue ->
                                     viewModel.onQueryChanged(newValue)
 //                            query.value = newValue
                                 },
+
                                 label = {
-                                    Text(text = "Search")
+                                    Text(
+                                        text = "Search",
+                                    )
                                 },
+
                                 keyboardOptions = KeyboardOptions(
                                     keyboardType = KeyboardType.Text,
                                     imeAction = ImeAction.Search,
                                 ),
-                                colors = TextFieldDefaults.textFieldColors(
-                                    backgroundColor = MaterialTheme.colors.surface
-                                ),
+
+                                keyboardActions = KeyboardActions(onSearch = {
+                                    viewModel.newSearch(query)
+                                    keyboardController?.clearFocus()
+                                }),
+
+
                                 leadingIcon = {
                                     Icon(
                                         imageVector = Icons.Filled.Search,
                                         contentDescription = ""
                                     )
-                                },
 
+                                },
+                                colors = TextFieldDefaults.textFieldColors(
+                                    backgroundColor = MaterialTheme.colors.surface,
+                                    textColor = MaterialTheme.colors.primary
+
+                                ),
 
                                 )
 
