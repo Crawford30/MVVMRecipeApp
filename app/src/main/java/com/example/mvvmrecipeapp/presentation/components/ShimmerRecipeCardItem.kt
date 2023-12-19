@@ -71,11 +71,9 @@ fun ShimmerRecipeCardItem(
                     .background(brush = brush)
             )
 
-
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-
         Spacer(
             modifier = Modifier
                 .fillMaxWidth()
