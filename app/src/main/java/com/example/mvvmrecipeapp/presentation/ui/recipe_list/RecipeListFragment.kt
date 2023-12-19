@@ -36,10 +36,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.mvvmrecipeapp.R
-import com.example.mvvmrecipeapp.presentation.components.CircularIndeterminateProgressBar
-import com.example.mvvmrecipeapp.presentation.components.FoodCategoryChip
-import com.example.mvvmrecipeapp.presentation.components.RecipeCard
-import com.example.mvvmrecipeapp.presentation.components.SearchAppBar
+import com.example.mvvmrecipeapp.presentation.components.*
 import com.example.mvvmrecipeapp.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -113,7 +110,13 @@ class RecipeListFragment : Fragment() {
                         onChangeCategoryPosition = viewModel::onChangeCategoryPosition
                     )
 
-                    GradientDemo()
+                    ShimmerRecipeCardItem(
+                        colors = listOf(
+                            Color.LightGray.copy(alpha = 0.9f),
+                            Color.LightGray.copy(alpha = 0.2f),
+                            Color.LightGray.copy(alpha = 0.9f)
+                        ), cardHeight = 250.dp
+                    )
 
 //                    //All its children will get overlayed over each other
 //                    Box(modifier = Modifier.fillMaxSize()) {
@@ -164,25 +167,26 @@ class RecipeListFragment : Fragment() {
 }
 
 
-
 @Composable
-fun GradientDemo(){
+fun GradientDemo() {
     val colors = listOf(
         Color.Blue,
         Color.Red,
         Color.Blue
     )
 
-    val brush =  linearGradient(
+    val brush = linearGradient(
         colors,
         start = Offset(200f, 200f),
         end = Offset(400f, 400f)
     )
 
-    Surface(shape = MaterialTheme.shapes.small){
-        Spacer(modifier = Modifier
-            .fillMaxSize()
-            .background(brush = brush))
+    Surface(shape = MaterialTheme.shapes.small) {
+        Spacer(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(brush = brush)
+        )
     }
 
 }
