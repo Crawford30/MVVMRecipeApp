@@ -140,63 +140,63 @@ class RecipeListFragment : Fragment() {
 
                     //All its children will get overlayed over each other
                     Box(modifier = Modifier.fillMaxSize()) {
-                        if (isLoading) {
-                            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                                repeat(5) {
-                                    ShimmerRecipeCardItem(
-                                        colors = listOf(
-                                            Color.LightGray.copy(alpha = 0.9f),
-                                            Color.LightGray.copy(alpha = 0.2f),
-                                            Color.LightGray.copy(alpha = 0.9f),
-                                        ),
-                                        cardHeight = 250.dp,
-                                        xshimmer = 0f,
-                                        yshimmer = 2000f,
-                                        padding = 16.dp
-                                    )
+//                        if (isLoading) {
+//                            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+//                                repeat(5) {
+//                                    ShimmerRecipeCardItem(
+//                                        colors = listOf(
+//                                            Color.LightGray.copy(alpha = 0.9f),
+//                                            Color.LightGray.copy(alpha = 0.2f),
+//                                            Color.LightGray.copy(alpha = 0.9f),
+//                                        ),
+//                                        cardHeight = 250.dp,
+//                                        xshimmer = 0f,
+//                                        yshimmer = 2000f,
+//                                        padding = 16.dp
+//                                    )
+//                                }
+//
+//                            }
+//
+//
+////                            ShimmerRecipeCardItem(
+////                                colors = listOf(
+////                                    Color.LightGray.copy(alpha = 0.9f),
+////                                    Color.LightGray.copy(alpha = 0.2f),
+////                                    Color.LightGray.copy(alpha = 0.9f),
+////                                ),
+////                                cardHeight = 250.dp,
+////                                xshimmer = 0f,
+////                                yshimmer = 2000f,
+////                                padding = 16.dp
+////                            )
+//
+//                        } else {
+//                            LazyColumn() {
+//                                itemsIndexed(
+//                                    items = recipes
+//                                ) { index, item ->
+//                                    RecipeCard(recipes = item, onClick = {})
+//                                }
+//                            }
+//                        }
+
+
+                        AnimatedShimmerCardItem(
+                            isLoading = isLoading,
+                            listCount = 10,
+                            contentAfterLoading = {
+                                LazyColumn() {
+                                    itemsIndexed(
+                                        items = recipes
+                                    ) { index, item ->
+                                        RecipeCard(recipes = item, onClick = {})
+                                    }
                                 }
-
-                            }
-
-
-//                            ShimmerRecipeCardItem(
-//                                colors = listOf(
-//                                    Color.LightGray.copy(alpha = 0.9f),
-//                                    Color.LightGray.copy(alpha = 0.2f),
-//                                    Color.LightGray.copy(alpha = 0.9f),
-//                                ),
-//                                cardHeight = 250.dp,
-//                                xshimmer = 0f,
-//                                yshimmer = 2000f,
-//                                padding = 16.dp
-//                            )
-
-                        } else {
-                            LazyColumn() {
-                                itemsIndexed(
-                                    items = recipes
-                                ) { index, item ->
-                                    RecipeCard(recipes = item, onClick = {})
-                                }
-                            }
-                        }
-
-
-//                                AnimatedShimmerCardItem(
-//                                    isLoading = isLoading,
-//                                    listCount = 10,
-//                                    contentAfterLoading = {
-//                                        LazyColumn() {
-//                                            itemsIndexed(
-//                                                items = recipes
-//                                            ) { index, item ->
-//                                                RecipeCard(recipes = item, onClick = {})
-//                                            }
-//                                        }
-//                                    },
-//                                    padding = 16.dp,
-//                                    cardHeight = 250.dp
-//                                )
+                            },
+                            padding = 16.dp,
+                            cardHeight = 250.dp
+                        )
 
 
                         CircularIndeterminateProgressBar(isDisplayed = isLoading, 0.2f)
