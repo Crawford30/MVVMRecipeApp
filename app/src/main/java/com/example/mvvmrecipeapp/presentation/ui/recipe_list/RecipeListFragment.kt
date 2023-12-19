@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -18,11 +19,10 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush.Companion.linearGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalFocusManager
@@ -101,7 +101,7 @@ class RecipeListFragment : Fragment() {
                  * val _query = savedInstanceState{ "beef" }
                  */
 
-                Column() {
+                Column {
                     //Call the AppBar Search
                     SearchAppBar(
                         query = query,
@@ -112,19 +112,22 @@ class RecipeListFragment : Fragment() {
                         onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
                         onChangeCategoryPosition = viewModel::onChangeCategoryPosition
                     )
-                    //All its children will get overlayed over each other
-                    Box(modifier = Modifier.fillMaxSize()) {
-                        LazyColumn() {
-                            itemsIndexed(
-                                items = recipes
-                            ) { index, item ->
-                                RecipeCard(recipes = item, onClick = {})
-                            }
-                        }
 
-                        CircularIndeterminateProgressBar(isDisplayed = isLoading, 0.3f)
+                    GradientDemo()
 
-                    }
+//                    //All its children will get overlayed over each other
+//                    Box(modifier = Modifier.fillMaxSize()) {
+//                        LazyColumn() {
+//                            itemsIndexed(
+//                                items = recipes
+//                            ) { index, item ->
+//                                RecipeCard(recipes = item, onClick = {})
+//                            }
+//                        }
+//
+//                        CircularIndeterminateProgressBar(isDisplayed = isLoading, 0.3f)
+//
+//                    }
 
                 }
 
@@ -157,5 +160,29 @@ class RecipeListFragment : Fragment() {
 //        return view
     }
 
+
+}
+
+
+
+@Composable
+fun GradientDemo(){
+    val colors = listOf(
+        Color.Blue,
+        Color.Red,
+        Color.Blue
+    )
+
+    val brush =  linearGradient(
+        colors,
+        start = Offset(200f, 200f),
+        end = Offset(400f, 400f)
+    )
+
+    Surface(shape = MaterialTheme.shapes.small){
+        Spacer(modifier = Modifier
+            .fillMaxSize()
+            .background(brush = brush))
+    }
 
 }
