@@ -107,6 +107,13 @@ dependencies {
     //Material Icons
     implementation "androidx.compose.material:material-icons-extended"
 
+    //Compose Runtime Animation
+//    implementation "androidx.compose.animation:animation-runtime:1.0.0"
+//    implementation 'androidx.compose.animation:animation:1.5.4'
+    implementation "androidx.compose.compiler:compiler:1.5.6"
+    implementation "androidx.compose.animation:animation:1.5.4"
+
+
 
 
     testImplementation 'junit:junit:4.13.2'

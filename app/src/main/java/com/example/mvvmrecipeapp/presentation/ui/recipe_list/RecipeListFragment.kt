@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.*
@@ -110,13 +111,26 @@ class RecipeListFragment : Fragment() {
                         onChangeCategoryPosition = viewModel::onChangeCategoryPosition
                     )
 
+
                     ShimmerRecipeCardItem(
                         colors = listOf(
                             Color.LightGray.copy(alpha = 0.9f),
                             Color.LightGray.copy(alpha = 0.2f),
-                            Color.LightGray.copy(alpha = 0.9f)
-                        ), cardHeight = 250.dp
+                            Color.LightGray.copy(alpha = 0.9f),
+
+                            ), cardHeight = 250.dp,
+                        xshimmer = 0f,
+                        yshimmer = 2000f
+
+
                     )
+//                    ShimmerRecipeCardItem(
+//                        colors = listOf(
+//                            Color.LightGray.copy(alpha = 0.9f),
+//                            Color.LightGray.copy(alpha = 0.2f),
+//                            Color.LightGray.copy(alpha = 0.9f)
+//                        ), cardHeight = 250.dp
+//                    )
 
 //                    //All its children will get overlayed over each other
 //                    Box(modifier = Modifier.fillMaxSize()) {
@@ -179,6 +193,49 @@ fun GradientDemo() {
         colors,
         start = Offset(200f, 200f),
         end = Offset(400f, 400f)
+    )
+
+    Surface(shape = MaterialTheme.shapes.small) {
+        Spacer(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(brush = brush)
+        )
+    }
+
+}
+
+
+@Composable
+fun LoadingShimmerEffect() {
+
+    //These colors will be used on the brush. The lightest color should be in the middle
+
+    val gradient = listOf(
+        Color.LightGray.copy(alpha = 0.9f), //darker grey (90% opacity)
+        Color.LightGray.copy(alpha = 0.3f), //lighter grey (30% opacity)
+        Color.LightGray.copy(alpha = 0.9f)
+    )
+
+    val transition = rememberInfiniteTransition() // animate infinite times
+
+    val translateAnimation = transition.animateFloat( //animate the transition
+        initialValue = 0f,
+        targetValue = 1000f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(
+                durationMillis = 1000, // duration for the animation
+                easing = FastOutLinearInEasing
+            )
+        )
+    )
+    val brush = linearGradient(
+        colors = gradient,
+        start = Offset(200f, 200f),
+        end = Offset(
+            x = translateAnimation.value,
+            y = translateAnimation.value
+        )
     )
 
     Surface(shape = MaterialTheme.shapes.small) {
