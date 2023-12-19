@@ -112,22 +112,22 @@ class RecipeListFragment : Fragment() {
                         onChangeCategoryPosition = viewModel::onChangeCategoryPosition
                     )
 
-                    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-                        repeat(5) {
-                            ShimmerRecipeCardItem(
-                                colors = listOf(
-                                    Color.LightGray.copy(alpha = 0.9f),
-                                    Color.LightGray.copy(alpha = 0.2f),
-                                    Color.LightGray.copy(alpha = 0.9f),
-                                ),
-                                cardHeight = 250.dp,
-                                xshimmer = 0f,
-                                yshimmer = 2000f,
-                                padding = 16.dp
-                            )
-                        }
-
-                    }
+//                    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+//                        repeat(5) {
+//                            ShimmerRecipeCardItem(
+//                                colors = listOf(
+//                                    Color.LightGray.copy(alpha = 0.9f),
+//                                    Color.LightGray.copy(alpha = 0.2f),
+//                                    Color.LightGray.copy(alpha = 0.9f),
+//                                ),
+//                                cardHeight = 250.dp,
+//                                xshimmer = 0f,
+//                                yshimmer = 2000f,
+//                                padding = 16.dp
+//                            )
+//                        }
+//
+//                    }
 
 
 //                    ShimmerRecipeCardItem(
@@ -138,19 +138,54 @@ class RecipeListFragment : Fragment() {
 //                        ), cardHeight = 250.dp
 //                    )
 
-//                    //All its children will get overlayed over each other
-//                    Box(modifier = Modifier.fillMaxSize()) {
-//                        LazyColumn() {
-//                            itemsIndexed(
-//                                items = recipes
-//                            ) { index, item ->
-//                                RecipeCard(recipes = item, onClick = {})
-//                            }
-//                        }
-//
-//                        CircularIndeterminateProgressBar(isDisplayed = isLoading, 0.3f)
-//
-//                    }
+                    //All its children will get overlayed over each other
+                    Box(modifier = Modifier.fillMaxSize()) {
+                        if (isLoading) {
+
+                            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                                repeat(5) {
+                                    ShimmerRecipeCardItem(
+                                        colors = listOf(
+                                            Color.LightGray.copy(alpha = 0.9f),
+                                            Color.LightGray.copy(alpha = 0.2f),
+                                            Color.LightGray.copy(alpha = 0.9f),
+                                        ),
+                                        cardHeight = 250.dp,
+                                        xshimmer = 0f,
+                                        yshimmer = 2000f,
+                                        padding = 16.dp
+                                    )
+                                }
+
+                            }
+
+
+//                            ShimmerRecipeCardItem(
+//                                colors = listOf(
+//                                    Color.LightGray.copy(alpha = 0.9f),
+//                                    Color.LightGray.copy(alpha = 0.2f),
+//                                    Color.LightGray.copy(alpha = 0.9f),
+//                                ),
+//                                cardHeight = 250.dp,
+//                                xshimmer = 0f,
+//                                yshimmer = 2000f,
+//                                padding = 16.dp
+//                            )
+
+                        } else {
+                            LazyColumn() {
+                                itemsIndexed(
+                                    items = recipes
+                                ) { index, item ->
+                                    RecipeCard(recipes = item, onClick = {})
+                                }
+                            }
+                        }
+
+
+                        CircularIndeterminateProgressBar(isDisplayed = isLoading, 0.2f)
+
+                    }
 
                 }
 
