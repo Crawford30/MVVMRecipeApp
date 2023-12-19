@@ -21,10 +21,12 @@ fun ShimmerRecipeCardItem(
     colors: List<Color>,
     cardHeight: Dp,
     xshimmer: Float,
-    yshimmer: Float
+    yshimmer: Float,
+    padding: Dp
 ) {
     val transition = rememberInfiniteTransition() // animate infinite times
-    val xtranslateAnimation = transition.animateFloat( //animate the transition
+    val xtranslateAnimation = transition.animateFloat(
+        //animate the transition
         initialValue = xshimmer,
         targetValue = yshimmer,
 
@@ -36,7 +38,7 @@ fun ShimmerRecipeCardItem(
             )
         ),
 
-    )
+        )
 
     val ytranslateAnimation = transition.animateFloat( //animate the transition
         initialValue = xshimmer,
@@ -58,14 +60,18 @@ fun ShimmerRecipeCardItem(
         )
     )
 
-    Surface(shape = MaterialTheme.shapes.small) {
-        Spacer(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(cardHeight)
-                .background(brush = brush)
-        )
+    Column(modifier = Modifier.padding(padding)) {
+        Surface(shape = MaterialTheme.shapes.small) {
+            Spacer(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(cardHeight)
+                    .background(brush = brush)
+            )
+        }
+
     }
+
 
 }
 

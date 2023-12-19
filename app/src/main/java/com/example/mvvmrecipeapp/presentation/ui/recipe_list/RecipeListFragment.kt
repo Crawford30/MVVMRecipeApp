@@ -117,10 +117,11 @@ class RecipeListFragment : Fragment() {
                             Color.LightGray.copy(alpha = 0.9f),
                             Color.LightGray.copy(alpha = 0.2f),
                             Color.LightGray.copy(alpha = 0.9f),
-
-                            ), cardHeight = 250.dp,
+                        ),
+                        cardHeight = 250.dp,
                         xshimmer = 0f,
-                        yshimmer = 2000f
+                        yshimmer = 2000f,
+                        padding = 16.dp
 
 
                     )
