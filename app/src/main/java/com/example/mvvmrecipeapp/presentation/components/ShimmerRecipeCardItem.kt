@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Brush.Companion.linearGradient
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.bumptech.glide.Glide.init
 import kotlinx.coroutines.delay
 
 
@@ -24,6 +25,7 @@ fun ShimmerRecipeCardItem(
     yshimmer: Float,
     padding: Dp
 ) {
+
     val transition = rememberInfiniteTransition() // animate infinite times
     val xtranslateAnimation = transition.animateFloat(
         //animate the transition

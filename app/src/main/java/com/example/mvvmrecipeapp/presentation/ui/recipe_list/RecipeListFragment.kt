@@ -17,6 +17,7 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
@@ -111,20 +112,24 @@ class RecipeListFragment : Fragment() {
                         onChangeCategoryPosition = viewModel::onChangeCategoryPosition
                     )
 
+                    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+                        repeat(5) {
+                            ShimmerRecipeCardItem(
+                                colors = listOf(
+                                    Color.LightGray.copy(alpha = 0.9f),
+                                    Color.LightGray.copy(alpha = 0.2f),
+                                    Color.LightGray.copy(alpha = 0.9f),
+                                ),
+                                cardHeight = 250.dp,
+                                xshimmer = 0f,
+                                yshimmer = 2000f,
+                                padding = 16.dp
+                            )
+                        }
 
-                    ShimmerRecipeCardItem(
-                        colors = listOf(
-                            Color.LightGray.copy(alpha = 0.9f),
-                            Color.LightGray.copy(alpha = 0.2f),
-                            Color.LightGray.copy(alpha = 0.9f),
-                        ),
-                        cardHeight = 250.dp,
-                        xshimmer = 0f,
-                        yshimmer = 2000f,
-                        padding = 16.dp
+                    }
 
 
-                    )
 //                    ShimmerRecipeCardItem(
 //                        colors = listOf(
 //                            Color.LightGray.copy(alpha = 0.9f),
