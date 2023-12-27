@@ -70,6 +70,7 @@ fun SearchAppBar(
                         )
                     },
 
+
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Text,
                         imeAction = ImeAction.Search,
@@ -88,9 +89,15 @@ fun SearchAppBar(
                     },
                     colors = TextFieldDefaults.textFieldColors(
                         backgroundColor = MaterialTheme.colors.surface,
-                        textColor = MaterialTheme.colors.primary
-                    ),
+                        textColor = MaterialTheme.colors.primary,
+
+                        ),
+
+                    textStyle = MaterialTheme.typography.button
+
+
                 )
+
                 //Elipse Icon
                 ConstraintLayout(
                     modifier = Modifier.align(Alignment.CenterVertically)
