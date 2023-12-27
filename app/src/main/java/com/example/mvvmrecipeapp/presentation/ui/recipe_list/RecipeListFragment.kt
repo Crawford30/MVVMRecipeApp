@@ -20,6 +20,9 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.BrokenImage
+import androidx.compose.material.icons.filled.Circle
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -132,7 +135,7 @@ class RecipeListFragment : Fragment() {
 
                         },
                         bottomBar = {
-
+                            MyBottomBar()
                         },
 
                         drawerContent = {
@@ -169,34 +172,59 @@ class RecipeListFragment : Fragment() {
                 }
 
             }
-//        val view = inflater.inflate(
-//            R.layout.fragment_recipe_list, container, false
-//        )
-//        view.findViewById<ComposeView>(R.id.compose_view).setContent {
-//            Column(
-//                modifier = Modifier
-//                    .border(border = BorderStroke(1.dp, Color.Black))
-//                    .padding(16.dp)
-//            ) {
-//
-//                Text("THIS IS A COMPOSABLE INSIDE THE FRAGMENT XML")
-//                Spacer(modifier = Modifier.padding(10.dp))
-//                CircularProgressIndicator()
-//                Spacer(modifier = Modifier.padding(10.dp))
-//                Text("NEAT")
-//                Spacer(modifier = Modifier.padding(10.dp))
-//
-//                val customView = HorizontalDottedProgress(LocalContext.current)
-//                AndroidView({customView})
-//            }
-//        }
-//
-//        return view}
 
         }
 
     }
 
+
+}
+
+
+@Composable
+fun MyBottomBar() {
+
+    BottomNavigation(
+        elevation = 12.dp
+    ) {
+
+
+        BottomNavigationItem(
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.BrokenImage, contentDescription = ""
+                )
+            },
+            selected = false,
+            onClick = {
+
+            }
+        )
+
+        BottomNavigationItem(
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Search, contentDescription = ""
+                )
+            },
+            selected = true,
+            onClick = {
+
+            }
+        )
+
+        BottomNavigationItem(
+            icon = {
+                Icon(
+                    imageVector = Icons.Default.Circle, contentDescription = ""
+                )
+            },
+            selected = false,
+            onClick = {
+
+            }
+        )
+    }
 
 }
 
