@@ -39,6 +39,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.example.mvvmrecipeapp.R
 import com.example.mvvmrecipeapp.presentation.BaseApplication
@@ -135,11 +137,11 @@ class RecipeListFragment : Fragment() {
 
                         },
                         bottomBar = {
-                            MyBottomBar()
+//                            MyBottomBar()
                         },
 
                         drawerContent = {
-
+//                            MyDrawer( )
                         }
 
                     ) {
@@ -183,7 +185,6 @@ class RecipeListFragment : Fragment() {
 
 @Composable
 fun MyBottomBar() {
-
     BottomNavigation(
         elevation = 12.dp
     ) {
@@ -228,6 +229,20 @@ fun MyBottomBar() {
 
 }
 
+
+@Composable
+fun MyDrawer() {
+    Column() {
+        Text("Item 1")
+        Text("Item 2")
+        Text("Item 3")
+        Text("Item 4")
+        Text("Item 5")
+        Text("Item 6")
+        Text("Item 7")
+
+    }
+}
 
 @Composable
 fun GradientDemo() {
