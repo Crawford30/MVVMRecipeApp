@@ -155,7 +155,11 @@ class RecipeListFragment : Fragment() {
 //                    )
 
                         //All its children will get overlayed over each other
-                        Box(modifier = Modifier.fillMaxSize()) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(color = MaterialTheme.colors.background),
+                        ) {
 //                        if (isLoading) {
 //                            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
 //                                repeat(5) {
