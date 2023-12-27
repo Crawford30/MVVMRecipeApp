@@ -10,15 +10,18 @@ import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.mvvmrecipeapp.presentation.ui.recipe_list.FoodCategory
 import com.example.mvvmrecipeapp.presentation.ui.recipe_list.getAllFoodCategories
 import kotlinx.coroutines.launch
@@ -31,34 +34,25 @@ fun SearchAppBar(
     scrollPosition: Float,
     selectedCategory: FoodCategory?,
     onSelectedCategoryChanged: (String) -> Unit,
-    onChangeCategoryPosition: (Float) -> Unit
+    onChangeCategoryPosition: (Float) -> Unit,
+    onToggleTheme: () -> Unit
 ) {
     Surface(
         modifier = Modifier.fillMaxWidth(),
         elevation = 8.dp,
-        color = Color.White,
+        color = MaterialTheme.colors.surface, //from theming(light/dark mode)
     ) {
 
         val keyboardController = LocalFocusManager.current
         val scrollState = rememberScrollState()
         val coroutineScope = rememberCoroutineScope()
+
         Column {
             /**
              *Horizontal category scroll view
              */
-            /**
-             *Horizontal category scroll view
-             */
-            /**
-             *Horizontal category scroll view
-             */
-
-            /**
-             *Horizontal category scroll view
-             */
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
+                modifier = Modifier.fillMaxWidth()
             ) {
                 TextField(
                     modifier = Modifier
@@ -86,11 +80,9 @@ fun SearchAppBar(
                         keyboardController?.clearFocus()
                     }),
 
-
                     leadingIcon = {
                         Icon(
-                            imageVector = Icons.Filled.Search,
-                            contentDescription = ""
+                            imageVector = Icons.Filled.Search, contentDescription = ""
                         )
 
                     },
@@ -99,6 +91,27 @@ fun SearchAppBar(
                         textColor = MaterialTheme.colors.primary
                     ),
                 )
+                //Elipse Icon
+                ConstraintLayout(
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                ) {
+                    val menu = createRef()
+                    IconButton(onClick = onToggleTheme,
+                        modifier = Modifier.constrainAs(menu) {
+                            end.linkTo(parent.end)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+
+                        }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Filled.MoreVert, contentDescription = ""
+                        )
+
+
+                    }
+
+                }
             }
 
 
@@ -107,15 +120,13 @@ fun SearchAppBar(
                     .fillMaxWidth()
                     .horizontalScroll(scrollState)
                     .padding(top = 8.dp, bottom = 8.dp)
-
             ) {
                 coroutineScope.launch {
                     scrollState.scrollTo(scrollPosition.toInt())
                 }
                 for (category in getAllFoodCategories()) {
 
-                    FoodCategoryChip(
-                        category = category.value,
+                    FoodCategoryChip(category = category.value,
                         isSelected = selectedCategory == category,
                         onSelectedCategoryChanged = {
                             onSelectedCategoryChanged(it)

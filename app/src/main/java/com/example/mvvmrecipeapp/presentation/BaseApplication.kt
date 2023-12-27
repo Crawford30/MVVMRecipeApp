@@ -1,6 +1,7 @@
 package com.example.mvvmrecipeapp.presentation
 
 import android.app.Application
+import androidx.compose.runtime.mutableStateOf
 import dagger.hilt.android.HiltAndroidApp
 
 /**
@@ -8,4 +9,14 @@ import dagger.hilt.android.HiltAndroidApp
  * Its done by Hilt
  */
 @HiltAndroidApp
-class BaseApplication : Application(){}
+class BaseApplication : Application(){
+    /**
+     * To keep track of dark and light theme
+     * Should be saved in Data store or cache
+     */
+    val isDarkTheme = mutableStateOf(false)
+
+    fun toggleTheme(){
+        isDarkTheme.value = !isDarkTheme.value
+    }
+}

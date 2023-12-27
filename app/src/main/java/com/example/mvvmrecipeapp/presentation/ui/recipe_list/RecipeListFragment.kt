@@ -38,16 +38,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.mvvmrecipeapp.R
+import com.example.mvvmrecipeapp.presentation.BaseApplication
 import com.example.mvvmrecipeapp.presentation.components.*
 import com.example.mvvmrecipeapp.ui.theme.MVVMRecipeAppTheme
 import com.example.mvvmrecipeapp.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.Locale.Category
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
 class RecipeListFragment : Fragment() {
+
+    @Inject
+    lateinit var application: BaseApplication
 
     private val viewModel: RecipeListViewModel by viewModels()
 
@@ -68,7 +73,7 @@ class RecipeListFragment : Fragment() {
             setContent {
 
                 MVVMRecipeAppTheme(
-                    darkTheme = false
+                    darkTheme = application.isDarkTheme.value
                 ) {
 
                     val keyboardController = LocalFocusManager.current
@@ -115,7 +120,12 @@ class RecipeListFragment : Fragment() {
                             scrollPosition = viewModel.categoryScrollPosition,
                             selectedCategory = selectedCategory,
                             onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
-                            onChangeCategoryPosition = viewModel::onChangeCategoryPosition
+                            onChangeCategoryPosition = viewModel::onChangeCategoryPosition,
+                            onToggleTheme = {
+                                application.toggleTheme()
+
+                            }
+
                         )
 
 //                    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
