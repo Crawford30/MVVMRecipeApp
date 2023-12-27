@@ -111,50 +111,36 @@ class RecipeListFragment : Fragment() {
                      * val _query = savedInstanceState{ "beef" }
                      */
 
-                    Column {
-                        //Call the AppBar Search
-                        SearchAppBar(
-                            query = query,
-                            onQueryChanged = viewModel::onQueryChanged,
-                            onExecuteSearch = viewModel::newSearch,
-                            scrollPosition = viewModel.categoryScrollPosition,
-                            selectedCategory = selectedCategory,
-                            onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
-                            onChangeCategoryPosition = viewModel::onChangeCategoryPosition,
-                            onToggleTheme = {
-                                application.toggleTheme()
+                    Scaffold(
 
-                            }
+                        topBar = {
+                            //Call the AppBar Search
+                            SearchAppBar(
+                                query = query,
+                                onQueryChanged = viewModel::onQueryChanged,
+                                onExecuteSearch = viewModel::newSearch,
+                                scrollPosition = viewModel.categoryScrollPosition,
+                                selectedCategory = selectedCategory,
+                                onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
+                                onChangeCategoryPosition = viewModel::onChangeCategoryPosition,
+                                onToggleTheme = {
+                                    application.toggleTheme()
 
-                        )
+                                }
 
-//                    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-//                        repeat(5) {
-//                            ShimmerRecipeCardItem(
-//                                colors = listOf(
-//                                    Color.LightGray.copy(alpha = 0.9f),
-//                                    Color.LightGray.copy(alpha = 0.2f),
-//                                    Color.LightGray.copy(alpha = 0.9f),
-//                                ),
-//                                cardHeight = 250.dp,
-//                                xshimmer = 0f,
-//                                yshimmer = 2000f,
-//                                padding = 16.dp
-//                            )
-//                        }
-//
-//                    }
+                            )
 
+                        },
+                        bottomBar = {
 
-//                    ShimmerRecipeCardItem(
-//                        colors = listOf(
-//                            Color.LightGray.copy(alpha = 0.9f),
-//                            Color.LightGray.copy(alpha = 0.2f),
-//                            Color.LightGray.copy(alpha = 0.9f)
-//                        ), cardHeight = 250.dp
-//                    )
+                        },
 
-                        //All its children will get overlayed over each other
+                        drawerContent = {
+
+                        }
+
+                    ) {
+
                         Box(
                             modifier = Modifier
                                 .fillMaxSize()
@@ -223,8 +209,9 @@ class RecipeListFragment : Fragment() {
 
                         }
 
-
                     }
+
+
 
 
                 }
