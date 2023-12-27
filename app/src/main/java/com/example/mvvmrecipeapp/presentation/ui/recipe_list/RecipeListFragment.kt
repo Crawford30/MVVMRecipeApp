@@ -146,48 +146,6 @@ class RecipeListFragment : Fragment() {
                                 .fillMaxSize()
                                 .background(color = MaterialTheme.colors.background),
                         ) {
-//                        if (isLoading) {
-//                            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
-//                                repeat(5) {
-//                                    ShimmerRecipeCardItem(
-//                                        colors = listOf(
-//                                            Color.LightGray.copy(alpha = 0.9f),
-//                                            Color.LightGray.copy(alpha = 0.2f),
-//                                            Color.LightGray.copy(alpha = 0.9f),
-//                                        ),
-//                                        cardHeight = 250.dp,
-//                                        xshimmer = 0f,
-//                                        yshimmer = 2000f,
-//                                        padding = 16.dp
-//                                    )
-//                                }
-//
-//                            }
-//
-//
-////                            ShimmerRecipeCardItem(
-////                                colors = listOf(
-////                                    Color.LightGray.copy(alpha = 0.9f),
-////                                    Color.LightGray.copy(alpha = 0.2f),
-////                                    Color.LightGray.copy(alpha = 0.9f),
-////                                ),
-////                                cardHeight = 250.dp,
-////                                xshimmer = 0f,
-////                                yshimmer = 2000f,
-////                                padding = 16.dp
-////                            )
-//
-//                        } else {
-//                            LazyColumn() {
-//                                itemsIndexed(
-//                                    items = recipes
-//                                ) { index, item ->
-//                                    RecipeCard(recipes = item, onClick = {})
-//                                }
-//                            }
-//                        }
-
-
                             AnimatedShimmerCardItem(
                                 isLoading = isLoading,
                                 listCount = 10,
@@ -203,16 +161,10 @@ class RecipeListFragment : Fragment() {
                                 padding = 16.dp,
                                 cardHeight = 250.dp
                             )
-
-
                             CircularIndeterminateProgressBar(isDisplayed = isLoading, 0.2f)
-
                         }
 
                     }
-
-
-
 
                 }
 
