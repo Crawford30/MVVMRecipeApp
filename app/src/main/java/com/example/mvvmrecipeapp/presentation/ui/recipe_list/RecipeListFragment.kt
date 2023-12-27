@@ -39,6 +39,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.findNavController
 import com.example.mvvmrecipeapp.R
 import com.example.mvvmrecipeapp.presentation.components.*
+import com.example.mvvmrecipeapp.ui.theme.MVVMRecipeAppTheme
 import com.example.mvvmrecipeapp.util.Constants.TAG
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
@@ -65,52 +66,57 @@ class RecipeListFragment : Fragment() {
         return ComposeView(requireContext()).apply {
 
             setContent {
-                val keyboardController = LocalFocusManager.current
-                val scrollState = rememberScrollState()
-                val coroutineScope = rememberCoroutineScope()
 
-                /**
-                 *The fragment change a bit since we're using MutableState
-                 * We get the value inside composables
-                 */
-                val recipes =
-                    viewModel.recipes.value //anytime the list, the value changes and any composable using this value will also change
+                MVVMRecipeAppTheme(
+                    darkTheme = false
+                ) {
 
-                /**
-                 *mutable data structure to get value from the input field
-                 * remember mentioned in JS doc, it uses the remember to store an instance of the object in memory
-                 * remember can store both mutable or immutable object
-                 * In fragment its private val query = ""
-                 */
+                    val keyboardController = LocalFocusManager.current
+                    val scrollState = rememberScrollState()
+                    val coroutineScope = rememberCoroutineScope()
+
+                    /**
+                     *The fragment change a bit since we're using MutableState
+                     * We get the value inside composables
+                     */
+                    val recipes =
+                        viewModel.recipes.value //anytime the list, the value changes and any composable using this value will also change
+
+                    /**
+                     *mutable data structure to get value from the input field
+                     * remember mentioned in JS doc, it uses the remember to store an instance of the object in memory
+                     * remember can store both mutable or immutable object
+                     * In fragment its private val query = ""
+                     */
 //                val query = remember {
 //                    mutableStateOf("beef")
 //                }
 
-                //Mutable state for search query
-                val query = viewModel.query.value
+                    //Mutable state for search query
+                    val query = viewModel.query.value
 
-                //Mutable state for selected category
-                val selectedCategory = viewModel.selectedCategory.value
+                    //Mutable state for selected category
+                    val selectedCategory = viewModel.selectedCategory.value
 
-                //loading state
-                val isLoading = viewModel.loading.value
+                    //loading state
+                    val isLoading = viewModel.loading.value
 
-                /**
-                 * Or we can use the [savedInstanceState] from JC'
-                 * val _query = savedInstanceState{ "beef" }
-                 */
+                    /**
+                     * Or we can use the [savedInstanceState] from JC'
+                     * val _query = savedInstanceState{ "beef" }
+                     */
 
-                Column {
-                    //Call the AppBar Search
-                    SearchAppBar(
-                        query = query,
-                        onQueryChanged = viewModel::onQueryChanged,
-                        onExecuteSearch = viewModel::newSearch,
-                        scrollPosition = viewModel.categoryScrollPosition,
-                        selectedCategory = selectedCategory,
-                        onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
-                        onChangeCategoryPosition = viewModel::onChangeCategoryPosition
-                    )
+                    Column {
+                        //Call the AppBar Search
+                        SearchAppBar(
+                            query = query,
+                            onQueryChanged = viewModel::onQueryChanged,
+                            onExecuteSearch = viewModel::newSearch,
+                            scrollPosition = viewModel.categoryScrollPosition,
+                            selectedCategory = selectedCategory,
+                            onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
+                            onChangeCategoryPosition = viewModel::onChangeCategoryPosition
+                        )
 
 //                    Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
 //                        repeat(5) {
@@ -138,8 +144,8 @@ class RecipeListFragment : Fragment() {
 //                        ), cardHeight = 250.dp
 //                    )
 
-                    //All its children will get overlayed over each other
-                    Box(modifier = Modifier.fillMaxSize()) {
+                        //All its children will get overlayed over each other
+                        Box(modifier = Modifier.fillMaxSize()) {
 //                        if (isLoading) {
 //                            Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
 //                                repeat(5) {
@@ -182,34 +188,34 @@ class RecipeListFragment : Fragment() {
 //                        }
 
 
-                        AnimatedShimmerCardItem(
-                            isLoading = isLoading,
-                            listCount = 10,
-                            contentAfterLoading = {
-                                LazyColumn() {
-                                    itemsIndexed(
-                                        items = recipes
-                                    ) { index, item ->
-                                        RecipeCard(recipes = item, onClick = {})
+                            AnimatedShimmerCardItem(
+                                isLoading = isLoading,
+                                listCount = 10,
+                                contentAfterLoading = {
+                                    LazyColumn() {
+                                        itemsIndexed(
+                                            items = recipes
+                                        ) { index, item ->
+                                            RecipeCard(recipes = item, onClick = {})
+                                        }
                                     }
-                                }
-                            },
-                            padding = 16.dp,
-                            cardHeight = 250.dp
-                        )
+                                },
+                                padding = 16.dp,
+                                cardHeight = 250.dp
+                            )
 
 
-                        CircularIndeterminateProgressBar(isDisplayed = isLoading, 0.2f)
+                            CircularIndeterminateProgressBar(isDisplayed = isLoading, 0.2f)
+
+                        }
+
 
                     }
 
 
                 }
 
-
             }
-
-        }
 //        val view = inflater.inflate(
 //            R.layout.fragment_recipe_list, container, false
 //        )
@@ -232,7 +238,10 @@ class RecipeListFragment : Fragment() {
 //            }
 //        }
 //
-//        return view
+//        return view}
+
+        }
+
     }
 
 
