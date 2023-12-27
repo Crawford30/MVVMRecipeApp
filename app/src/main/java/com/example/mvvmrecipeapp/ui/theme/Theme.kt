@@ -55,7 +55,7 @@ fun MVVMRecipeAppTheme(
 
     MaterialTheme(
         colors = colors,
-        typography = Typography,
+        typography = QuickSandTypographyObj,
         shapes = Shapes,
         content = content
     )

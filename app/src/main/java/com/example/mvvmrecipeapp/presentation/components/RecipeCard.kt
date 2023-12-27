@@ -101,7 +101,7 @@ fun RecipeCard(
                         modifier = Modifier
                             .fillMaxWidth(0.85f) //occupy 85% width
                             .wrapContentWidth(Alignment.Start),
-                        style = MaterialTheme.typography.h5
+                        style = MaterialTheme.typography.h3
                     )
 
                     /**
@@ -114,7 +114,7 @@ fun RecipeCard(
                             .fillMaxWidth()
                             .wrapContentWidth(Alignment.End)
                             .align(Alignment.CenterVertically),
-                        style = MaterialTheme.typography.h6
+                        style = MaterialTheme.typography.h5
                     )
                 }
             }
