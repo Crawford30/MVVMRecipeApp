@@ -1,16 +1,15 @@
 package com.example.mvvmrecipeapp.presentation.ui.recipe_list
 
 
+import android.net.http.SslCertificate.restoreState
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.example.mvvmrecipeapp.domain.model.Recipe
 import com.example.mvvmrecipeapp.repository.RecipeRepository
 import com.example.mvvmrecipeapp.util.Constants.TAG
+import dagger.assisted.Assisted
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -19,13 +18,21 @@ import javax.inject.Named
 
 const val PAGE_SIZE = 30
 
+const val STATE_KEY_PAGE = "recipe.state.page.key"
+const val STATE_KEY_QUERY = "recipe.state.query.key"
+const val STATE_KEY_LIST_POSITION = "recipe.state.query.list_position"
+const val STATE_KEY_SELECTED_CATEGORY = "recipe.state.query.selected_category"
+
 /**
  * RecipeList viewmodel
  */
 @HiltViewModel
 class RecipeListViewModel @Inject constructor(
     private val repository: RecipeRepository,
-    @Named("auth_token") private val token: String
+    @Named("auth_token") private val token: String,
+//    @Assisted private val savedStateHandle: SavedStateHandle
+     private val savedStateHandle: SavedStateHandle
+
 ) : ViewModel() {
 
     /**
@@ -72,6 +79,34 @@ class RecipeListViewModel @Inject constructor(
      * Get the data
      */
     init {
+
+        //If the process die, the VM and if the process is restored, the state with restored
+        //inside this init
+        savedStateHandle.get<Int>(STATE_KEY_PAGE)?.let { p ->
+            Log.d(TAG, "restoring page: ${p}")
+            setPage(p)
+        }
+        savedStateHandle.get<String>(STATE_KEY_QUERY)?.let { q ->
+            setQuery(q)
+        }
+        savedStateHandle.get<Int>(STATE_KEY_LIST_POSITION)?.let { p ->
+            Log.d(TAG, "restoring scroll position: ${p}")
+            setListScrollPosition(p)
+        }
+        savedStateHandle.get<FoodCategory>(STATE_KEY_SELECTED_CATEGORY)?.let { c ->
+            setSelectedCategory(c)
+        }
+
+        // Were they doing something before the process died?
+        //Check the scroll position to check if the process is not dead
+        if (recipeListScrollPosition != 0) {
+            //Not dead, restore state
+            onTriggerEvent(RecipeListEvent.RestoreStateEvent)
+        } else {
+            //New event
+            onTriggerEvent(RecipeListEvent.NewSearchEvent)
+        }
+
         onTriggerEvent(RecipeListEvent.NewSearchEvent)
 //        newSearch() //newSearch("chicken")
     }
@@ -91,6 +126,9 @@ class RecipeListViewModel @Inject constructor(
                         nextPage()
 
                     }
+                    is RecipeListEvent.RestoreStateEvent -> {
+                        restoreState()
+                    }
                 }
 
             } catch (e: Exception) {
@@ -99,6 +137,31 @@ class RecipeListViewModel @Inject constructor(
         }
 
     }
+
+
+    private suspend fun restoreState() {
+        loading.value = true
+        //If the user was viewing page 1,2,3 we need to get all those and append to the list
+
+        // Must retrieve each page of results.
+        val results: MutableList<Recipe> = mutableListOf()
+
+        //In prod, we would use cache layer instead of having to query the data from api again
+        //We query from the cache
+        for (p in 1..page.value) {
+            Log.d(TAG, "restoreState: page: ${p}, query: ${query.value}")
+            val result = repository.search(token = token, page = p, query = query.value)
+            results.addAll(result)
+
+            //If p equals to current pagination, we're done
+            if (p == page.value) { // done
+                recipes.value = results
+                loading.value = false
+            }
+        }
+
+    }
+
 
     //Use cases are functions inside a viewmodel
     //Use case #1
@@ -168,12 +231,35 @@ class RecipeListViewModel @Inject constructor(
      * Function to increment page number
      */
     private fun incrementPageNumber() {
-        page.value = page.value + 1
+//        page.value = page.value + 1
+        setPage(page.value + 1)
     }
 
     fun onChangeRecipeScrollPosition(position: Int) {
-        recipeListScrollPosition = position
+//        recipeListScrollPosition = position
+        setListScrollPosition(position)
 
+    }
+
+
+    private fun setListScrollPosition(position: Int) {
+        recipeListScrollPosition = position //update scroll position
+        savedStateHandle.set(STATE_KEY_LIST_POSITION, position) //update state handle
+    }
+
+    private fun setPage(page: Int) {
+        this.page.value = page //update the page
+        savedStateHandle.set(STATE_KEY_PAGE, page) //update the state handle
+    }
+
+    private fun setSelectedCategory(category: FoodCategory?) {
+        selectedCategory.value = category
+        savedStateHandle.set(STATE_KEY_SELECTED_CATEGORY, category)
+    }
+
+    private fun setQuery(query: String) {
+        this.query.value = query
+        savedStateHandle.set(STATE_KEY_QUERY, query)
     }
 
     /**
@@ -194,7 +280,8 @@ class RecipeListViewModel @Inject constructor(
      *This function is used to change the value of the input field since we can do it directly in the fragment
      */
     fun onQueryChanged(query: String) {
-        this.query.value = query
+        setQuery(query = query)
+//        this.query.value = query
     }
 
     /**
@@ -203,8 +290,8 @@ class RecipeListViewModel @Inject constructor(
 
     fun onSelectedCategoryChanged(category: String) {
         val newCategory = getFoodCategory(category) //get the enum value
-        selectedCategory.value = newCategory
-
+//        selectedCategory.value = newCategory
+        setSelectedCategory(newCategory)
         onQueryChanged(category) //then change the query parameter
     }
 
@@ -220,6 +307,7 @@ class RecipeListViewModel @Inject constructor(
      *This function is used to clear the selected category
      */
     private fun clearSelectedCategory() {
+        setSelectedCategory(null)
         selectedCategory.value = null
     }
 

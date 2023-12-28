@@ -8,4 +8,7 @@ sealed class RecipeListEvent {
     object NewSearchEvent : RecipeListEvent()
 
     object NextPageEvent : RecipeListEvent()
+
+    //restores state event due to process death when may be the phone runs low in resources like RAM
+    object RestoreStateEvent : RecipeListEvent()
 }
