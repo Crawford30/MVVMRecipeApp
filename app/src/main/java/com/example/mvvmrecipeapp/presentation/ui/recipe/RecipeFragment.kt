@@ -30,47 +30,32 @@ import kotlinx.coroutines.launch
  */
 
 class RecipeFragment : Fragment() {
-    private var recipeId: MutableState<Int>? = mutableStateOf(-1)
+
+    private var recipeId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        CoroutineScope(Main).launch {
-            delay(1000)
-            arguments?.getInt("recipeId")?.let { Id ->
-                recipeId?.value = Id
-            }
+        arguments?.getInt("recipeId")?.let { recipeId ->
+            this.recipeId = recipeId
         }
-
-
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        if (recipeId?.value != -1) {
-                            "Selected Recipe ID: ${recipeId?.value}"
-
-                        } else {
-                            "Loading..."
-                        },
+                        text = "Selected recipeId: ${recipeId}",
                         style = TextStyle(
-                            fontSize = 26.sp
+                            fontSize = 21.sp
                         )
                     )
                 }
-
             }
         }
-
-        // Inflate the layout for this fragment
-//        return inflater.inflate(R.layout.fragment_recipe, container, false)
     }
-
-
 }

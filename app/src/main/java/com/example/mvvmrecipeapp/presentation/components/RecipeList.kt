@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScaffoldState
 import androidx.compose.runtime.Composable
@@ -21,7 +22,9 @@ import com.example.mvvmrecipeapp.presentation.ui.recipe_list.PAGE_SIZE
 import com.example.mvvmrecipeapp.presentation.ui.recipe_list.RecipeListEvent
 import com.example.mvvmrecipeapp.util.Constants.TAG
 import com.example.mvvmrecipeapp.util.SnackbarController
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+
 
 @Composable
 fun RecipeList(
@@ -61,12 +64,16 @@ fun RecipeList(
                             onClick = {
                                 if (item.id != null) {
                                     //Go to another fragment
+//                                    val bundle = Bundle()
+//                                    bundle.putInt("recipeId", item.id)
+//
+//                                    Log.d(TAG, "Card Tapped: ${index}")
+//                                    print("Card Tapped: ${index}")
+//                                    //Do the navigation
+//                                    navController.navigate(R.id.viewRecipe, bundle)
+
                                     val bundle = Bundle()
                                     bundle.putInt("recipeId", item.id)
-
-                                    Log.d(TAG, "Card Tapped: ${index}")
-                                    print("Card Tapped: ${index}")
-                                    //Do the navigation
                                     navController.navigate(R.id.viewRecipe, bundle)
 
 

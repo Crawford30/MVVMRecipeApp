@@ -181,19 +181,30 @@ class RecipeListFragment : Fragment() {
 
                     ) {
 
-                        //Call the Recipe List Composable (State Hoisting)
                         RecipeList(
                             isLoading = isLoading,
                             recipes = recipes,
-                            page = page,
-                            scaffoldState = scaffoldState,
                             onChangeRecipeScrollPosition = viewModel::onChangeRecipeScrollPosition,
-                            onNextPage = {
-                                viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)
-                            },
+                            page = page,
+                            onNextPage = {viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)},
+                            navController = findNavController(),
+                            scaffoldState = scaffoldState,
                             snackbarController = snackbarController,
-                            navController = findNavController()
                         )
+
+                        //Call the Recipe List Composable (State Hoisting)
+//                        RecipeList(
+//                            isLoading = isLoading,
+//                            recipes = recipes,
+//                            page = page,
+//                            scaffoldState = scaffoldState,
+//                            onChangeRecipeScrollPosition = viewModel::onChangeRecipeScrollPosition,
+//                            onNextPage = {
+//                                viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)
+//                            },
+//                            snackbarController = snackbarController,
+//                            navController = findNavController()
+//                        )
 
 
                     }
