@@ -49,6 +49,7 @@ import com.example.mvvmrecipeapp.presentation.BaseApplication
 import com.example.mvvmrecipeapp.presentation.components.*
 import com.example.mvvmrecipeapp.ui.theme.MVVMRecipeAppTheme
 import com.example.mvvmrecipeapp.util.Constants.TAG
+import com.example.mvvmrecipeapp.util.SnackbarController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 import java.util.Locale.Category
@@ -62,6 +63,8 @@ class RecipeListFragment : Fragment() {
     lateinit var application: BaseApplication
 
     private val viewModel: RecipeListViewModel by viewModels()
+
+    private val snackbarController = SnackbarController(lifecycleScope)
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -121,7 +124,6 @@ class RecipeListFragment : Fragment() {
                      */
 
                     Scaffold(
-
                         topBar = {
                             //Call the AppBar Search
                             SearchAppBar(
@@ -129,12 +131,20 @@ class RecipeListFragment : Fragment() {
                                 onQueryChanged = viewModel::onQueryChanged,
                                 onExecuteSearch = {
                                     if (viewModel.selectedCategory.value?.value == "Milk") {
-                                        lifecycleScope.launch {
-                                            scaffoldState.snackbarHostState.showSnackbar(
+                                        snackbarController.getScope().launch {
+                                            snackbarController.showSnackbar(
+                                                scaffoldState = scaffoldState,
                                                 message = "Invalid Category: Milk!",
                                                 actionLabel = "Hide"
                                             )
                                         }
+
+//                                        lifecycleScope.launch {
+//                                            scaffoldState.snackbarHostState.showSnackbar(
+//                                                message = "Invalid Category: Milk!",
+//                                                actionLabel = "Hide"
+//                                            )
+//                                        }
 
                                     } else {
                                         viewModel::newSearch
