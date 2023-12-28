@@ -116,6 +116,8 @@ class RecipeListFragment : Fragment() {
                     //loading state
                     val isLoading = viewModel.loading.value
 
+                    val page = viewModel.page.value
+
                     val scaffoldState = rememberScaffoldState()
 
                     /**
@@ -182,13 +184,19 @@ class RecipeListFragment : Fragment() {
                                 .background(color = MaterialTheme.colors.background),
                         ) {
                             AnimatedShimmerCardItem(
-                                isLoading = isLoading,
+                                isLoading = isLoading && recipes.isEmpty(),
                                 listCount = 10,
                                 contentAfterLoading = {
                                     LazyColumn() {
                                         itemsIndexed(
                                             items = recipes
                                         ) { index, item ->
+                                            viewModel.onChangeRecipeScrollPosition(index) //keep track of scroll position
+
+                                            //check if we're at the bottom of the list
+                                            if ((index + 1) > (page * PAGE_SIZE) && !isLoading) {
+                                                viewModel.nextPage()
+                                            }
                                             RecipeCard(recipes = item, onClick = {})
                                         }
                                     }

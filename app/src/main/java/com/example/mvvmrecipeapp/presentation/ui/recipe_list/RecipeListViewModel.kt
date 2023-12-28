@@ -1,6 +1,7 @@
 package com.example.mvvmrecipeapp.presentation.ui.recipe_list
 
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.LiveData
@@ -9,11 +10,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.mvvmrecipeapp.domain.model.Recipe
 import com.example.mvvmrecipeapp.repository.RecipeRepository
+import com.example.mvvmrecipeapp.util.Constants.TAG
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import javax.inject.Named
+
+const val PAGE_SIZE = 30
 
 /**
  * RecipeList viewmodel
@@ -58,6 +62,13 @@ class RecipeListViewModel @Inject constructor(
     val loading = mutableStateOf(false)
 
     /**
+     * Pagination
+     */
+
+    val page = mutableStateOf(1)
+    private var recipeListScrollPosition = 0
+
+    /**
      * Get the data
      */
     init {
@@ -66,8 +77,6 @@ class RecipeListViewModel @Inject constructor(
 
     fun newSearch() {
         loading.value = true //set loading to true
-
-
         viewModelScope.launch {
             delay(2000)
 
@@ -88,6 +97,70 @@ class RecipeListViewModel @Inject constructor(
         }
 
     }
+
+    /**
+     * Function to get the next page
+     */
+
+     fun nextPage() {
+        viewModelScope.launch {
+            //prevent duplicate events due to recompose happening too quickly
+            //If there is a query inn progress, stop getting the next page
+
+            if ((recipeListScrollPosition + 1) >= (page.value * PAGE_SIZE)) {
+                loading.value = true
+                incrementPageNumber()
+
+                Log.d(TAG, "nextPage: triggered:: ${page.value}")
+
+                //Just to show pagination, coz api is fast
+                delay(1000)
+
+                //It shouldnt be called when the app first launches
+                if (page.value > 1) {
+                    val result = repository.search(
+                        token = token,
+                        page = page.value,
+                        query = query.value
+                    )
+                    Log.d(TAG, "result: triggered:: ${result}")
+
+                    appendRecipes(result)
+
+                }
+
+                loading.value = false
+
+            }
+        }
+    }
+
+
+    /**
+     * Function to increment page number
+     */
+    private fun incrementPageNumber() {
+        page.value = page.value + 1
+    }
+
+    fun onChangeRecipeScrollPosition(position: Int) {
+        recipeListScrollPosition = position
+
+    }
+
+    /**
+     *Append recipe to the current list od recipes
+     */
+    private fun appendRecipes(recipes: List<Recipe>) {
+        val current = ArrayList(this.recipes.value)
+
+        //Add current list to the old list
+        current.addAll(recipes)
+
+        //Update the list
+        this.recipes.value = current
+    }
+
 
     /**
      *This function is used to change the value of the input field since we can do it directly in the fragment
@@ -127,7 +200,15 @@ class RecipeListViewModel @Inject constructor(
      */
 
     private fun resetSearchState() {
+
         recipes.value = listOf() //reset recipe list
+
+        //reset the page
+        page.value = 1
+
+        //reset on scoll position
+        onChangeRecipeScrollPosition(0)
+
 
         //If the selected category is not equal to query.value, we clear it
         if (selectedCategory.value?.value != query.value) {
