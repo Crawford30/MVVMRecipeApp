@@ -8,12 +8,19 @@ import android.view.ViewGroup
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Text
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.PointerEventPass
+import androidx.compose.ui.platform.AndroidUiDispatcher.Companion.Main
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 
 /**
@@ -21,10 +28,20 @@ import dagger.hilt.android.AndroidEntryPoint
  * Use the [RecipeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-@AndroidEntryPoint
+
 class RecipeFragment : Fragment() {
+    private var recipeId: MutableState<Int>? = mutableStateOf(-1)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        CoroutineScope(Main).launch {
+            delay(1000)
+            arguments?.getInt("recipeId")?.let { Id ->
+                recipeId?.value = Id
+            }
+        }
+
 
     }
 
@@ -32,12 +49,16 @@ class RecipeFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-
-        return ComposeView(requireContext()).apply { 
+        return ComposeView(requireContext()).apply {
             setContent {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        "RECIPE FRAGMENT",
+                        if (recipeId?.value != -1) {
+                            "Selected Recipe ID: ${recipeId?.value}"
+
+                        } else {
+                            "Loading..."
+                        },
                         style = TextStyle(
                             fontSize = 26.sp
                         )
@@ -51,12 +72,5 @@ class RecipeFragment : Fragment() {
 //        return inflater.inflate(R.layout.fragment_recipe, container, false)
     }
 
-    companion object {
 
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RecipeFragment().apply {
-
-            }
-    }
 }

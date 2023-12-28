@@ -181,44 +181,20 @@ class RecipeListFragment : Fragment() {
 
                     ) {
 
-                        Box(
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(color = MaterialTheme.colors.background),
-                        ) {
-                            AnimatedShimmerCardItem(
-                                isLoading = isLoading && recipes.isEmpty(),
-                                listCount = 10,
-                                contentAfterLoading = {
-                                    LazyColumn() {
-                                        itemsIndexed(
-                                            items = recipes
-                                        ) { index, item ->
-                                            viewModel.onChangeRecipeScrollPosition(index) //keep track of scroll position
+                        //Call the Recipe List Composable (State Hoisting)
+                        RecipeList(
+                            isLoading = isLoading,
+                            recipes = recipes,
+                            page = page,
+                            scaffoldState = scaffoldState,
+                            onChangeRecipeScrollPosition = viewModel::onChangeRecipeScrollPosition,
+                            onNextPage = {
+                                viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)
+                            },
+                            snackbarController = snackbarController,
+                            navController = findNavController()
+                        )
 
-                                            //check if we're at the bottom of the list
-                                            if ((index + 1) > (page * PAGE_SIZE) && !isLoading) {
-//                                                viewModel.nextPage()
-                                                viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)
-                                            }
-                                            RecipeCard(recipes = item, onClick = {})
-                                        }
-                                    }
-                                },
-                                padding = 16.dp,
-                                cardHeight = 250.dp
-                            )
-                            CircularIndeterminateProgressBar(isDisplayed = isLoading, 0.2f)
-
-                            DefaultSnackbar(
-                                snackbarHostState = scaffoldState.snackbarHostState,
-                                onDismiss = {
-                                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                                },
-                                modifier = Modifier.align((Alignment.BottomCenter))
-                            )
-
-                        }
 
                     }
 
