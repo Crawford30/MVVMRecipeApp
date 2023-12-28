@@ -67,12 +67,14 @@ fun SearchAppBar(
                     label = {
                         Text(
                             text = "Search",
+//                            color = MaterialTheme.colors.onBackground,
                         )
                     },
 
 
                     keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Text,
+                        a
+                                keyboardType = KeyboardType . Text,
                         imeAction = ImeAction.Search,
                     ),
 
@@ -88,8 +90,8 @@ fun SearchAppBar(
 
                     },
                     colors = TextFieldDefaults.textFieldColors(
-                        backgroundColor = MaterialTheme.colors.surface,
-                        textColor = MaterialTheme.colors.primary,
+                        backgroundColor = MaterialTheme.colors.background,
+                        textColor = MaterialTheme.colors.onBackground,
 
                         ),
 
@@ -132,7 +134,6 @@ fun SearchAppBar(
                     scrollState.scrollTo(scrollPosition.toInt())
                 }
                 for (category in getAllFoodCategories()) {
-
                     FoodCategoryChip(category = category.value,
                         isSelected = selectedCategory == category,
                         onSelectedCategoryChanged = {

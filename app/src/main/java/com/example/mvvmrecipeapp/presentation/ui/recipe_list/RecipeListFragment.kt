@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.Circle
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush.Companion.linearGradient
@@ -39,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -76,14 +78,14 @@ class RecipeListFragment : Fragment() {
         return ComposeView(requireContext()).apply {
 
             setContent {
+                val keyboardController = LocalFocusManager.current
+                val scrollState = rememberScrollState()
+                val coroutineScope = rememberCoroutineScope()
 
                 MVVMRecipeAppTheme(
                     darkTheme = application.isDarkTheme.value
                 ) {
 
-                    val keyboardController = LocalFocusManager.current
-                    val scrollState = rememberScrollState()
-                    val coroutineScope = rememberCoroutineScope()
 
                     /**
                      *The fragment change a bit since we're using MutableState
@@ -111,6 +113,8 @@ class RecipeListFragment : Fragment() {
                     //loading state
                     val isLoading = viewModel.loading.value
 
+                    val scaffoldState = rememberScaffoldState()
+
                     /**
                      * Or we can use the [savedInstanceState] from JC'
                      * val _query = savedInstanceState{ "beef" }
@@ -123,7 +127,19 @@ class RecipeListFragment : Fragment() {
                             SearchAppBar(
                                 query = query,
                                 onQueryChanged = viewModel::onQueryChanged,
-                                onExecuteSearch = viewModel::newSearch,
+                                onExecuteSearch = {
+                                    if (viewModel.selectedCategory.value?.value == "Milk") {
+                                        lifecycleScope.launch {
+                                            scaffoldState.snackbarHostState.showSnackbar(
+                                                message = "Invalid Category: Milk!",
+                                                actionLabel = "Hide"
+                                            )
+                                        }
+
+                                    } else {
+                                        viewModel::newSearch
+                                    }
+                                },
                                 scrollPosition = viewModel.categoryScrollPosition,
                                 selectedCategory = selectedCategory,
                                 onSelectedCategoryChanged = viewModel::onSelectedCategoryChanged,
@@ -142,6 +158,10 @@ class RecipeListFragment : Fragment() {
 
                         drawerContent = {
 //                            MyDrawer( )
+                        },
+                        scaffoldState = scaffoldState,
+                        snackbarHost = {
+                            scaffoldState.snackbarHostState //hooking scaffold to snackbar host
                         }
 
                     ) {
@@ -167,6 +187,15 @@ class RecipeListFragment : Fragment() {
                                 cardHeight = 250.dp
                             )
                             CircularIndeterminateProgressBar(isDisplayed = isLoading, 0.2f)
+
+                            DefaultSnackbar(
+                                snackbarHostState = scaffoldState.snackbarHostState,
+                                onDismiss = {
+                                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+                                },
+                                modifier = Modifier.align((Alignment.BottomCenter))
+                            )
+
                         }
 
                     }
