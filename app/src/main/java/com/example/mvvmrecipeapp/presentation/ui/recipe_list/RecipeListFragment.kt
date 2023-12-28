@@ -167,13 +167,13 @@ class RecipeListFragment : Fragment() {
                             )
 
                         },
-                        bottomBar = {
+//                        bottomBar = {
 //                            MyBottomBar()
-                        },
+//                        },
 
-                        drawerContent = {
-//                            MyDrawer( )
-                        },
+//                        drawerContent = {
+//                          MyDrawer( )
+//                        },
                         scaffoldState = scaffoldState,
                         snackbarHost = {
                             scaffoldState.snackbarHostState //hooking scaffold to snackbar host
