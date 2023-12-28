@@ -72,29 +72,56 @@ class RecipeListViewModel @Inject constructor(
      * Get the data
      */
     init {
-        newSearch() //newSearch("chicken")
+        onTriggerEvent(RecipeListEvent.NewSearchEvent)
+//        newSearch() //newSearch("chicken")
     }
 
-    fun newSearch() {
-        loading.value = true //set loading to true
+    /**
+     * Trigger our Events
+     */
+    fun onTriggerEvent(event: RecipeListEvent) {
         viewModelScope.launch {
-            delay(2000)
+            try {
+                when (event) {
+                    is RecipeListEvent.NewSearchEvent -> {
+                        newSearch()
 
-            resetSearchState()
+                    }
+                    is RecipeListEvent.NextPageEvent -> {
+                        nextPage()
 
-            val result = repository.search(
-                token = token,
-                page = 1,
-                query = query.value
-            )
+                    }
+                }
 
-            /**
-             *Set the value
-             */
-            recipes.value = result
-            //If we get results, we reset the loading state
-            loading.value = false
+            } catch (e: Exception) {
+                Log.d(TAG, "triggered Event::Exception ${e}, ${e.cause}")
+            }
         }
+
+    }
+
+    //Use cases are functions inside a viewmodel
+    //Use case #1
+    private suspend fun newSearch() {
+        loading.value = true //set loading to true
+
+        delay(2000)
+
+        resetSearchState()
+
+        val result = repository.search(
+            token = token,
+            page = 1,
+            query = query.value
+        )
+
+        /**
+         *Set the value
+         */
+        recipes.value = result
+        //If we get results, we reset the loading state
+        loading.value = false
+
 
     }
 
@@ -102,36 +129,37 @@ class RecipeListViewModel @Inject constructor(
      * Function to get the next page
      */
 
-     fun nextPage() {
-        viewModelScope.launch {
-            //prevent duplicate events due to recompose happening too quickly
-            //If there is a query inn progress, stop getting the next page
+    //Use case #2
+    private suspend fun nextPage() {
 
-            if ((recipeListScrollPosition + 1) >= (page.value * PAGE_SIZE)) {
-                loading.value = true
-                incrementPageNumber()
+        //prevent duplicate events due to recompose happening too quickly
+        //If there is a query inn progress, stop getting the next page
 
-                Log.d(TAG, "nextPage: triggered:: ${page.value}")
+        if ((recipeListScrollPosition + 1) >= (page.value * PAGE_SIZE)) {
+            loading.value = true
+            incrementPageNumber()
 
-                //Just to show pagination, coz api is fast
-                delay(1000)
+            Log.d(TAG, "nextPage: triggered:: ${page.value}")
 
-                //It shouldnt be called when the app first launches
-                if (page.value > 1) {
-                    val result = repository.search(
-                        token = token,
-                        page = page.value,
-                        query = query.value
-                    )
-                    Log.d(TAG, "result: triggered:: ${result}")
+            //Just to show pagination, coz api is fast
+            delay(1000)
 
-                    appendRecipes(result)
+            //It shouldnt be called when the app first launches
+            if (page.value > 1) {
+                val result = repository.search(
+                    token = token,
+                    page = page.value,
+                    query = query.value
+                )
+                Log.d(TAG, "result: triggered:: ${result}")
 
-                }
-
-                loading.value = false
+                appendRecipes(result)
 
             }
+
+            loading.value = false
+
+
         }
     }
 

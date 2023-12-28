@@ -41,6 +41,7 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
@@ -149,7 +150,9 @@ class RecipeListFragment : Fragment() {
 //                                        }
 
                                     } else {
-                                        viewModel::newSearch
+//                                        viewModel::newSearch
+                                        viewModel.onTriggerEvent(RecipeListEvent.NewSearchEvent)
+
                                     }
                                 },
                                 scrollPosition = viewModel.categoryScrollPosition,
@@ -195,7 +198,8 @@ class RecipeListFragment : Fragment() {
 
                                             //check if we're at the bottom of the list
                                             if ((index + 1) > (page * PAGE_SIZE) && !isLoading) {
-                                                viewModel.nextPage()
+//                                                viewModel.nextPage()
+                                                viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)
                                             }
                                             RecipeCard(recipes = item, onClick = {})
                                         }
