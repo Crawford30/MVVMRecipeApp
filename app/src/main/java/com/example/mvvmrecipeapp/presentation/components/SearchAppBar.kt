@@ -73,8 +73,7 @@ fun SearchAppBar(
 
 
                     keyboardOptions = KeyboardOptions(
-                        a
-                                keyboardType = KeyboardType . Text,
+                        keyboardType = KeyboardType.Text,
                         imeAction = ImeAction.Search,
                     ),
 
