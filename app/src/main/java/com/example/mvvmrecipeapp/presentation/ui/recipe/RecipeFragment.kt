@@ -73,22 +73,6 @@ class RecipeFragment : Fragment() {
                 }
             }
         }
-//        return ComposeView(requireContext()).apply {
-//            val loading = viewModel.loading.value
-//            val recipe = viewModel.recipe.value
-//
-//            setContent {
-//                Column(modifier = Modifier.padding(16.dp)) {
-//                    Text(
-//                        text = recipe?.let {
-//                            "SELECTED RECIPE ID: ${recipe.id}  ${recipe.title}"
-//                        } ?: "Loading...",
-//                        style = TextStyle(
-//                            fontSize = 21.sp
-//                        )
-//                    )
-//                }
-//            }
-//        }
+
     }
 }
