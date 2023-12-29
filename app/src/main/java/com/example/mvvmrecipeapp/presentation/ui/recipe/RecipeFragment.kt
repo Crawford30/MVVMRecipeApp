@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.mvvmrecipeapp.presentation.BaseApplication
+import com.example.mvvmrecipeapp.presentation.components.AnimatedRecipeDetailShimmer
 import com.example.mvvmrecipeapp.presentation.components.CircularIndeterminateProgressBar
 import com.example.mvvmrecipeapp.presentation.components.DefaultSnackbar
 import com.example.mvvmrecipeapp.presentation.components.RecipeView
@@ -45,6 +46,8 @@ import javax.inject.Inject
  * Use the [RecipeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
+
+private val IMAGE_HEIGHT = 260
 
 @AndroidEntryPoint
 class RecipeFragment : Fragment() {
@@ -94,22 +97,26 @@ class RecipeFragment : Fragment() {
                             modifier = Modifier.fillMaxSize()
                         ) {
 
-                            if (loading && recipe == null) {
-                                Text(text = "LOADING....")
-                            } else {
-                                recipe?.let {
-                                    if (it.id == 1) {
-                                        snackbarController.showSnackbar(
-                                            scaffoldState = scaffoldState,
-                                            message = "An error occurred",
-                                            actionLabel = "Ok"
-                                        )
 
-                                    } else {
-                                        RecipeView(recipe = it)
-                                    }
-                                }
-                            }
+//                            recipe?.let {
+//                                if (it.id == 1) {
+//                                    snackbarController.showSnackbar(
+//                                        scaffoldState = scaffoldState,
+//                                        message = "An error occurred",
+//                                        actionLabel = "Ok"
+//                                    )
+//
+//                                }
+//                            }
+
+                            AnimatedRecipeDetailShimmer(
+                                isLoading = (loading && recipe == null),
+                                contentAfterLoading = {
+                                    RecipeView(recipe = recipe!!)
+                                },
+                                padding = 0.dp,
+                                cardHeight = IMAGE_HEIGHT.dp
+                            )
 
                             CircularIndeterminateProgressBar(
                                 isDisplayed = loading,
