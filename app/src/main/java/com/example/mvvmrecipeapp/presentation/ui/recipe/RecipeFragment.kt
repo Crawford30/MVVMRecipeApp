@@ -120,7 +120,7 @@ class RecipeFragment : Fragment() {
 
                             CircularIndeterminateProgressBar(
                                 isDisplayed = loading,
-                                verticalBias = 0.3f
+                                verticalBias = 0.2f
                             )
 
                             DefaultSnackbar(
