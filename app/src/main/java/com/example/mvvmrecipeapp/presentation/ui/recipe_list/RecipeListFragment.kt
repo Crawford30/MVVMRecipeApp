@@ -192,9 +192,6 @@ class RecipeListFragment : Fragment() {
                             snackbarController = snackbarController,
                         )
 
-
-
-
                     }
 
                 }
@@ -214,7 +211,6 @@ fun MyBottomBar() {
     BottomNavigation(
         elevation = 12.dp
     ) {
-
 
         BottomNavigationItem(
             icon = {

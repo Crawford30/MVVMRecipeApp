@@ -23,7 +23,7 @@ TODO("Not yet implemented")
 }
  */
 
-class RecipeRespositoryImpl (
+class RecipeRespositoryImpl(
 
     private val recipeRetrofitService: RecipeRetrofitService,
     private val mapper: RecipeNetworkDTOMapper
@@ -37,7 +37,7 @@ class RecipeRespositoryImpl (
         return mapper.toDomainList(result)
     }
 
-    override suspend fun getRecipe(token: String, Id: Int): Recipe {
+    override suspend fun getSingleRecipe(token: String, Id: Int): Recipe {
         return mapper.mapToDomainModel(recipeRetrofitService.get(token, Id))
     }
 

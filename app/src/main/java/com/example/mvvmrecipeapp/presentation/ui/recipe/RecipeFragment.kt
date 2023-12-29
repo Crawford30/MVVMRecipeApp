@@ -1,6 +1,7 @@
 package com.example.mvvmrecipeapp.presentation.ui.recipe
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -17,6 +18,9 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.fragment.app.viewModels
+import com.example.mvvmrecipeapp.presentation.ui.recipe_list.RecipeListViewModel
+import com.example.mvvmrecipeapp.util.Constants
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
@@ -29,15 +33,21 @@ import kotlinx.coroutines.launch
  * create an instance of this fragment.
  */
 
+@AndroidEntryPoint
 class RecipeFragment : Fragment() {
 
-    private var recipeId: Int = -1
+    //Using AndroidEntryPoint gives us room to instantiate viewmodel like  private val viewModel: RecipeViewModel by viewModels()
+    private val viewModel: RecipeViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         arguments?.getInt("recipeId")?.let { recipeId ->
-            this.recipeId = recipeId
+            viewModel.onTriggerEvent(RecipeEvent.GetRecipeEvent(recipeId))
+
         }
+
     }
 
     override fun onCreateView(
@@ -47,9 +57,15 @@ class RecipeFragment : Fragment() {
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
+
+                val loading = viewModel.loading.value
+
+                val recipe = viewModel.recipe.value
+
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        text = "Selected recipeId: ${recipeId}",
+                        text = recipe?.let { recipe -> "Selected recipeId: ${recipe.title}" }
+                            ?: "LOADING...",
                         style = TextStyle(
                             fontSize = 21.sp
                         )
@@ -57,5 +73,22 @@ class RecipeFragment : Fragment() {
                 }
             }
         }
+//        return ComposeView(requireContext()).apply {
+//            val loading = viewModel.loading.value
+//            val recipe = viewModel.recipe.value
+//
+//            setContent {
+//                Column(modifier = Modifier.padding(16.dp)) {
+//                    Text(
+//                        text = recipe?.let {
+//                            "SELECTED RECIPE ID: ${recipe.id}  ${recipe.title}"
+//                        } ?: "Loading...",
+//                        style = TextStyle(
+//                            fontSize = 21.sp
+//                        )
+//                    )
+//                }
+//            }
+//        }
     }
 }

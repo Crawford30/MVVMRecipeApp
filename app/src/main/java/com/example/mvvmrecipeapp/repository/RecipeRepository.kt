@@ -16,5 +16,5 @@ interface RecipeRepository {
     /**
      *The search function returns a single object of [Recipe] from the domain model(bness model)
      */
-    suspend fun getRecipe(token: String, Id: Int): Recipe
+    suspend fun getSingleRecipe(token: String, id: Int): Recipe
 }
