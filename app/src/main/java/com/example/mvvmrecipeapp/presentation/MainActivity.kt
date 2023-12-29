@@ -147,7 +147,7 @@ fun Greeting(name: String) {
 @Preview(showBackground = true)
 @Composable
 fun DefaultPreview() {
-    MVVMRecipeAppTheme {
-        Greeting("Android")
-    }
+//    MVVMRecipeAppTheme {
+//        Greeting("Android")
+//    }
 }

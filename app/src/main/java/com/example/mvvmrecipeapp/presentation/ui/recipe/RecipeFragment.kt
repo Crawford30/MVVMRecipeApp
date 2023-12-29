@@ -85,7 +85,11 @@ class RecipeFragment : Fragment() {
                 val recipe = viewModel.recipe.value
                 val scaffoldState = rememberScaffoldState()
 
-                MVVMRecipeAppTheme(darkTheme = application.isDarkTheme.value) {
+                MVVMRecipeAppTheme(
+                    darkTheme = application.isDarkTheme.value,
+                    displayProgressBar = loading,
+                    scaffoldState = scaffoldState
+                ) {
                     Scaffold(
                         scaffoldState = scaffoldState,
                         snackbarHost = {
@@ -118,18 +122,6 @@ class RecipeFragment : Fragment() {
                                 cardHeight = IMAGE_HEIGHT.dp
                             )
 
-                            CircularIndeterminateProgressBar(
-                                isDisplayed = loading,
-                                verticalBias = 0.2f
-                            )
-
-                            DefaultSnackbar(
-                                snackbarHostState = scaffoldState.snackbarHostState,
-                                onDismiss = {
-                                    scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-                                },
-                                modifier = Modifier.align(Alignment.BottomCenter)
-                            )
 
                         }
 

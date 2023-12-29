@@ -86,10 +86,24 @@ class RecipeListFragment : Fragment() {
                 val scrollState = rememberScrollState()
                 val coroutineScope = rememberCoroutineScope()
 
-                MVVMRecipeAppTheme(
-                    darkTheme = application.isDarkTheme.value
-                ) {
+                //Mutable state for search query
+                val query = viewModel.query.value
 
+                //Mutable state for selected category
+                val selectedCategory = viewModel.selectedCategory.value
+
+                //loading state
+                val isLoading = viewModel.loading.value
+
+                val page = viewModel.page.value
+
+                val scaffoldState = rememberScaffoldState()
+
+                MVVMRecipeAppTheme(
+                    darkTheme = application.isDarkTheme.value,
+                    displayProgressBar = isLoading,
+                    scaffoldState = scaffoldState
+                ) {
 
                     /**
                      *The fragment change a bit since we're using MutableState
@@ -108,18 +122,6 @@ class RecipeListFragment : Fragment() {
 //                    mutableStateOf("beef")
 //                }
 
-                    //Mutable state for search query
-                    val query = viewModel.query.value
-
-                    //Mutable state for selected category
-                    val selectedCategory = viewModel.selectedCategory.value
-
-                    //loading state
-                    val isLoading = viewModel.loading.value
-
-                    val page = viewModel.page.value
-
-                    val scaffoldState = rememberScaffoldState()
 
                     /**
                      * Or we can use the [savedInstanceState] from JC'
@@ -186,7 +188,7 @@ class RecipeListFragment : Fragment() {
                             recipes = recipes,
                             onChangeRecipeScrollPosition = viewModel::onChangeRecipeScrollPosition,
                             page = page,
-                            onNextPage = {viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent)},
+                            onNextPage = { viewModel.onTriggerEvent(RecipeListEvent.NextPageEvent) },
                             navController = findNavController(),
                             scaffoldState = scaffoldState,
                             snackbarController = snackbarController,

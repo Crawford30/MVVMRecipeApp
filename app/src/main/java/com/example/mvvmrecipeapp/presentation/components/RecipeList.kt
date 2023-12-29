@@ -99,15 +99,17 @@ fun RecipeList(
             padding = 16.dp,
             cardHeight = 250.dp
         )
-        CircularIndeterminateProgressBar(isDisplayed = isLoading, 0.2f)
 
-        DefaultSnackbar(
-            snackbarHostState = scaffoldState.snackbarHostState,
-            onDismiss = {
-                scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
-            },
-            modifier = Modifier.align((Alignment.BottomCenter))
-        )
+        //===Below has been moved to app theme====
+//        CircularIndeterminateProgressBar(isDisplayed = isLoading, 0.2f)
+//
+//        DefaultSnackbar(
+//            snackbarHostState = scaffoldState.snackbarHostState,
+//            onDismiss = {
+//                scaffoldState.snackbarHostState.currentSnackbarData?.dismiss()
+//            },
+//            modifier = Modifier.align((Alignment.BottomCenter))
+//        )
 
     }
 
